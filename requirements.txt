@@ -1,0 +1,9 @@
+Django==2.2.12
+beautifulsoup4==4.4.1
+celery==4.4.2
+djangorestframework==3.11.0
+djangorestframework-simplejwt==4.3.0
+djoser==2.0.3
+vk-api==11.8.0
+requests==2.9.1
+
