@@ -1,0 +1,1 @@
+{"error": {"error_code": 15, "error_msg": "Access denied: no access to call this method", "request_params": [{"value": "-190835095", "key": "owner_id"}, {"value": "1", "key": "from_group"}, {"value": "5.52", "key": "v"}, {"value": "РЇ РѕР±РѕР¶Р°СЋ СЌС‚РѕС‚ С‡СѓРґРµСЃРЅС‹ РјРёСЂ", "key": "message"}, {"value": "wall.post", "key": "method"}, {"value": "1", "key": "oauth"}]}}

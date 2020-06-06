@@ -1,0 +1,6 @@
+local.py
+*__pycache__/
+PRG1/
+key_petfinder
+key_petfinder.pub
+celerybeat-schedule

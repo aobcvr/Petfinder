@@ -1,0 +1,18 @@
+from vk_api.longpoll import VkLongPoll,VkEventType
+import vk_api
+import requests
+from datetime import datetime
+token='06942137a73d0f8ce3700ad2e698631390d869623ec2571260bfdf0a6c463dcc46a31c3a3344fba779093'
+access_token='be26ec5032ee4d4b2cb8e2ac0161b42c70a6b8cb806f61ee9cded8b1bfc4c6709a324bd5a302af10fa94d'
+acess_token_attachment='5bd5a6c7f2ac1b7f4f97f8defbac93c3bf51dbeeeb0780b3c0d2e409dc8ff2a31bf6d2cfc7bbea1ad77b9'
+group_id=190870098
+
+login='dkdjjdkd@gmail.com'
+password='qazwsx1861'
+token='be26ec5032ee4d4b2cb8e2ac0161b42c70a6b8cb806f61ee9cded8b1bfc4c6709a324bd5a302af10fa94d'
+
+vk_session=vk_api.VkApi(login,password,token=acess_token_attachment)
+session_api=vk_session.get_api()
+
+vk_session.method('wall.post',{'owner_id':-190870098,'from_group':1,'message':'Я обожаю этот чудесны мир'})
+#c22e5a7802316aad8f64d41642bffc73f51c493ae398229cef788d89c870f26b866f8716470f22deee10f
