@@ -4,3 +4,5 @@ PRG1/
 key_petfinder
 key_petfinder.pub
 celerybeat-schedule
+.idea
+*sqlite3
