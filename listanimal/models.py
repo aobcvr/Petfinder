@@ -13,6 +13,9 @@ class AnimalInfo(models.Model):
     color = models.ForeignKey('AnimalColor',on_delete=models.PROTECT,null=True)
     photos = ArrayField(models.URLField(null=True))
 
+    def __str__(self):
+        return self.name
+
 
 class AnimalColor(models.Model):
     primary = models.CharField(max_length=200,null=True)
@@ -43,6 +46,9 @@ class AnimalNews(models.Model):
 
 class CustomUser(AbstractUser):
     favorit_animal = models.ManyToManyField('AnimalInfo')
+
+
+
 
 
 

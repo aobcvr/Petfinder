@@ -1,12 +1,10 @@
 from bs4 import BeautifulSoup as bs
 import requests
-from datetime import timedelta
+import logging
 headers={'Accept':'*/*',
         'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
-
 base_url='https://russian.rt.com'
 tag_zhivotnie=base_url+'/tag/zhivotnye'
-
 
 
 def rt_news_animal():
@@ -113,5 +111,3 @@ def rt_news_animal():
                                                             'time_post': time_post})
         return novosti
 
-if __name__ == '__main__':
-    rt_news_animal()
