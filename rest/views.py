@@ -16,7 +16,7 @@ class LoggerRequest:
     def __call__(self, request):
         response=self.get_response(request)
         if response.status_code==401:
-            logger.error(msg='Попытка пройти по ссылке без авторизации'+str(request)+str(response)+str(self.get_response))
+            logger.error(msg='Попытка пройти по ссылке без авторизации'+str(self.get_response))
         return response
 
 
