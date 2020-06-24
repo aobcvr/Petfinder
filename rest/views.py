@@ -7,6 +7,7 @@ from . serializers_url_news import UrlAnimalNewsSerializer
 from . serializers_url_advert import UrlAnimalAdvertSerializer
 from rest_framework import viewsets
 from rest_framework import permissions
+from django.http import HttpRequest
 import logging
 logger = logging.getLogger('rest.views')
 
@@ -16,7 +17,7 @@ class LoggerRequest:
     def __call__(self, request):
         response=self.get_response(request)
         if response.status_code==401:
-            logger.error(msg='Попытка пройти по ссылке без авторизации'+str(self.get_response))
+            logger.error(msg='Попытка пройти по ссылке без авторизации  '+str(HttpRequest.get_full_path(request)))
         return response
 
 
@@ -24,7 +25,7 @@ class AnimalNewsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UrlAnimalNewsSerializer
 
-    @LoggerRequest
+
     def get(self,request, *args, **kwargs ):
             serializer = self.serializer_class(data=request.GET)
             serializer.is_valid(raise_exception=True)
@@ -37,7 +38,7 @@ class AnimalAdvertisementView(viewsets.ModelViewSet):
     serializer_class = AnimalInfoSerializer
     queryset = AnimalInfo.objects.all()
 
-    @LoggerRequest
+
     def list(self,request, *args, **kwargs ):
         serializer = UrlAnimalAdvertSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
@@ -48,7 +49,7 @@ class AnimalAdvertisementView(viewsets.ModelViewSet):
 class AnimalAdvertisementTupeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    @LoggerRequest
+
     def get(self,request):
         type = AnimalType.objects.all()
         serializer=AnimalTypeSerializer(type,many=True)
@@ -58,7 +59,7 @@ class AnimalAdvertisementTupeView(APIView):
 class AnimalAdvertisementColorView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    @LoggerRequest
+
     def get(self,request):
         color = AnimalColor.objects.all()
         serializer=AnimalColorSerializer(color,many=True)
@@ -68,7 +69,7 @@ class AnimalAdvertisementColorView(APIView):
 class FavoritAnimal(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    @LoggerRequest
+
     def get(self,request):
             queriset=request.user.favorit_animal.all()
             private_data = AnimalInfoSerializer(queriset, many=True).data
