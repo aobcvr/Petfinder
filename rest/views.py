@@ -1,15 +1,20 @@
 from rest_framework.views import APIView
 from .serializers_animal import AnimalInfoSerializer,AnimalTypeSerializer,AnimalColorSerializer
 from .serializers_news import AnimalNewsSerializer
-from listanimal.models import AnimalNews,AnimalInfo,AnimalColor,AnimalType
+from listanimal.models_animals import AnimalInfo,AnimalColor,AnimalType
 from rest_framework.response import Response
 from . serializers_url_news import UrlAnimalNewsSerializer
 from . serializers_url_advert import UrlAnimalAdvertSerializer
 from rest_framework import viewsets
 from rest_framework import permissions
 from django.http import HttpRequest
+from drf_yasg.views import get_schema_view
 import logging
-logger = logging.getLogger('rest.views')
+logger = logging.getLogger('create.logger')
+
+SchemaView=get_schema_view()
+
+
 
 class LoggerRequest:
     def __init__(self, get_response):

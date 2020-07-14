@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from listanimal.models import AnimalInfo,AnimalColor,AnimalType
+from listanimal.models_animals import AnimalInfo,AnimalColor,AnimalType
 import json,requests
 from django.core.mail import send_mail
 from petfinder.local import acess_token_attachment,group_id,login,password,client_id,client_secret
@@ -15,7 +15,7 @@ login=login
 password=password
 vk_session=vk_api.VkApi(login,password,token=acess_token_attachment)
 session_api=vk_session.get_api()
-logger = logging.getLogger('commands.createanimal')
+logger = logging.getLogger('create.logger')
 class Command(BaseCommand):
     def handle(self, *args, **options):
         self.createanimal()

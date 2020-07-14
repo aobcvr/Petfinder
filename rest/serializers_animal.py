@@ -1,4 +1,4 @@
-from listanimal.models import AnimalInfo,AnimalColor,AnimalType
+from listanimal.models_animals import AnimalInfo,AnimalColor,AnimalType
 
 from rest_framework import serializers
 

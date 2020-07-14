@@ -23,7 +23,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'django_db_logger'
+    'django_celery_results',
+    'django_db_logger',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
@@ -59,6 +61,7 @@ WSGI_APPLICATION = 'petfinder.wsgi.application'
 
 
 REST_FRAMEWORK = {
+
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication'
@@ -125,41 +128,19 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'log_news': {
+        'log_error': {
             'level': 'ERROR',
             'class': 'django_db_logger.db_log_handler.DatabaseLogHandler',
-        },
-        'log_animal': {
-            'level': 'ERROR',
-            'class': 'django_db_logger.db_log_handler.DatabaseLogHandler',
-        },
-        'log_rest': {
-            'level': 'ERROR',
-            'class': 'django_db_logger.db_log_handler.DatabaseLogHandler',
-        },
+        }
     },
     'loggers': {
-        'commands.createnews': {
-            'handlers': ['log_news'],
+        'create.logger': {
+            'handlers': ['log_error'],
             'level': 'ERROR',
             'propagate': True,
         },
-    },
-    'loggers': {
-        'commands.createanimal': {
-            'handlers': ['log_animal'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    },
-    'loggers': {
-        'rest.views': {
-            'handlers': ['log_rest'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    },
-}
+    }
+    }
 #EMAIL_HOSTE=EMAIL_HOST
 #EMAIL_HOST_USER=EMAIL_HOST_USER
 #EMAIL_HOST_PASSWORD=EMAIL_HOST_PASSWORD
@@ -167,3 +148,23 @@ LOGGING = {
 #SECRET_KEY = SECRET_KEY
 EMAIL_USE_TLS = True
 STATIC_URL = '/static/'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+}
+
+REDOC_SETTINGS = {
+   'LAZY_RENDERING': False,
+}

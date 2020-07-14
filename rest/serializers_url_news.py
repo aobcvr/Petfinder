@@ -1,7 +1,6 @@
-from .serializers_animal import AnimalInfoSerializer
 from rest_framework import serializers
 from django.db.models import Q
-from listanimal.models import AnimalNews
+from listanimal.models_news import AnimalNews
 class UrlAnimalNewsSerializer(serializers.Serializer):
     search_line=serializers.CharField()
 

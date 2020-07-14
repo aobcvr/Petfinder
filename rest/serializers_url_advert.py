@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.db.models import Q
-from listanimal.models import AnimalInfo,AnimalColor,AnimalType
+from listanimal.models_animals import AnimalInfo,AnimalColor,AnimalType
 
 class UrlAnimalAdvertSerializer(serializers.Serializer):
     size=serializers.ChoiceField(default=None,choices=[('Large','Large'),('Medium','Medium'),('Small','Small')])
@@ -17,5 +17,4 @@ class UrlAnimalAdvertSerializer(serializers.Serializer):
         if data['animaltype'] != []:
             val &=Q(animal_type__in=self.validated_data['animaltype'])
         return AnimalInfo.objects.filter(val)
-
 
