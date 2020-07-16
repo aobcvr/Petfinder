@@ -1,6 +1,6 @@
 from listanimal.parseranimal import RtNewsAnimalParser
 from django.core.management.base import BaseCommand
-from listanimal.models_news import AnimalNew
+from listanimal.models_news import AnimalNews
 from django.core.mail import send_mail
 
 import vk_api
@@ -12,6 +12,8 @@ import logging
 logger = logging.getLogger('create.logger')
 vk_session=vk_api.VkApi(token=acess_token_attachment)
 upload_url=vk_session.method('photos.getWallUploadServer',{'group_id':group_id,'v':5.95})['upload_url']
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
@@ -22,7 +24,7 @@ class Command(BaseCommand):
 
     def createnews(self):
         summ_new_news = ''
-        news= RtNewsAnimalParser.rt_news_animal(self)
+        news= RtNewsAnimalParser.rt_news_animal()
         for animal_news in news:
             create_object, is_created = AnimalNews.objects.update_or_create(heading=animal_news['heading'],defaults=animal_news)
             if is_created:

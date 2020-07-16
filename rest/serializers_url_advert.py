@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.db.models import Q
-from listanimal.models_animals import AnimalInfo,AnimalColor,AnimalType
+from listanimal.models import AnimalInfo,AnimalColor,AnimalType
 
 class UrlAnimalAdvertSerializer(serializers.Serializer):
     size=serializers.ChoiceField(default=None,choices=[('Large','Large'),('Medium','Medium'),('Small','Small')])

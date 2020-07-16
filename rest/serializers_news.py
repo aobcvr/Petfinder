@@ -1,4 +1,4 @@
-from listanimal.models_news import AnimalNews
+from listanimal.models import AnimalNews
 from rest_framework import serializers
 
 class AnimalNewsSerializer(serializers.ModelSerializer):
