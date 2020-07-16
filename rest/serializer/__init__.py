@@ -1,0 +1,3 @@
+from .AnimalNewsSerializer import AnimalNewsSerializer
+from .UrlAnimalAdvertSerializer import UrlAnimalAdvertSerializer
+from .UrlAnimalNewsSerializer import UrlAnimalNewsSerializer
