@@ -26,6 +26,6 @@ app_name='rest'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('rest/',include('rest.urls')),
-    path('api-token-auth/',views.obtain_auth_token),]
+    ]
 
 urlpatterns+=yasg_url

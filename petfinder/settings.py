@@ -3,7 +3,7 @@ import os
 from . local import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
 AUTH_USER_MODEL = 'listanimal.CustomUser'
 
 DEBUG = True
@@ -64,8 +64,11 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
+}
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 DATABASES = {
@@ -129,19 +132,40 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'log_error': {
+        'log_error_request': {
             'level': 'ERROR',
-            'class': 'django_db_logger.db_log_handler.DatabaseLogHandler',
+            'class': 'logging.FileHandler',
+            'filename':'rest/request_err.log'
+        },
+        'error_create_news': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename':'listanimal/management/commands/news.log'
+        },
+        'error_create_advertisement': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename':'listanimal/management/commands/advertisement.log'
         }
     },
     'loggers': {
-        'create.logger': {
-            'handlers': ['log_error'],
+        'rest.views': {
+            'handlers': ['log_error_request'],
             'level': 'ERROR',
             'propagate': True,
         },
-    }
-    }
+        'commands.createnews': {
+            'handlers': ['error_create_news'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'commands.createanimal': {
+            'handlers': ['error_create_advertisement'],
+            'level': 'ERROR',
+            'propagate': True,
+        }
+    },
+}
 #EMAIL_HOSTE=EMAIL_HOST
 #EMAIL_HOST_USER=EMAIL_HOST_USER
 #EMAIL_HOST_PASSWORD=EMAIL_HOST_PASSWORD
@@ -169,3 +193,4 @@ SWAGGER_SETTINGS = {
 REDOC_SETTINGS = {
    'LAZY_RENDERING': False,
 }
+FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'Petfinder/new_fixtures')

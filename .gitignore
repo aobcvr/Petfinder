@@ -6,3 +6,7 @@ key_petfinder.pub
 celerybeat-schedule
 .idea
 *sqlite3
+advertisement.log
+request_err.log
+news.log
+

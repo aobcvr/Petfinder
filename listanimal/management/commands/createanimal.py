@@ -3,9 +3,11 @@ from listanimal.models import AnimalInfo,AnimalColor,AnimalType
 import json,requests
 from django.core.mail import send_mail
 from petfinder.local import acess_token_attachment,group_id,login,password,client_id,client_secret
+from listanimal.models import NewestLogFileContent
 import vk_api
 import logging
-logger = logging.getLogger('create.logger')
+from django.utils import timezone
+logger = logging.getLogger('commands.createanimal')
 
 
 class Command(BaseCommand):
@@ -60,7 +62,10 @@ class Command(BaseCommand):
                                         )})
 
         except:
-            logger.error(msg='Ошибка отправки объявления в вк:' + one_animal['name'])
+            logger.error(msg='Ошибка отправки объявления в вк:{},{}'.format(one_animal['name'],timezone.now()))
+            log_db = open('listanimal/management/commands/advertisement.log', 'r')
+            NewestLogFileContent.objects.update_or_create(log_filename='commands.advertisement',defaults={'content':log_db.readlines()[-100:-1]})
+            log_db.close()
 
     def send_massage(self,summ_new_animals,one_animal):
         if summ_new_animals != '':

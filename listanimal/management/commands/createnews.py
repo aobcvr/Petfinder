@@ -1,30 +1,30 @@
 from listanimal.parseranimal import RtNewsAnimalParser
 from django.core.management.base import BaseCommand
-from listanimal.models_news import AnimalNews
+from listanimal.models import AnimalNews
 from django.core.mail import send_mail
-
+from listanimal.models import NewestLogFileContent
 import vk_api
 import requests
 from petfinder.settings import acess_token_attachment,group_id
+from django.utils import timezone
 import os
 import time
 import logging
-logger = logging.getLogger('create.logger')
 vk_session=vk_api.VkApi(token=acess_token_attachment)
 upload_url=vk_session.method('photos.getWallUploadServer',{'group_id':group_id,'v':5.95})['upload_url']
 
+logger = logging.getLogger('commands.createnews')
+log_db=open('listanimal/management/commands/news.log','r')
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        try:
             self.createnews()
-        except:
-            logger.info(msg='парсер сломался')
+
 
 
     def createnews(self):
         summ_new_news = ''
-        news= RtNewsAnimalParser.rt_news_animal()
+        news= RtNewsAnimalParser.rt_news_animal(self)
         for animal_news in news:
             create_object, is_created = AnimalNews.objects.update_or_create(heading=animal_news['heading'],defaults=animal_news)
             if is_created:
@@ -98,7 +98,9 @@ class Command(BaseCommand):
                                                             animal_news['description_news'],
                                                             animal_news['heading'])})
         except:
-            logger.error(msg='Ошибка отправки новости в вк ' + animal_news['description_news'])
+            logger.error(msg='Ошибка отправки новости в вк {},{}'.format(animal_news['description_news'],str(timezone.now())))
+        NewestLogFileContent.objects.update_or_create(
+            log_filename='commands.createnews', defaults={'content':log_db.read()[-100:-1]})
 
 
     def send_news(self,summ_new_news,animal_news):
@@ -110,4 +112,6 @@ class Command(BaseCommand):
             send_mail('нет новостей', 'новостей нет', 'dkdjjdkd@gmail.com', ['paveligin1861@gmail.com'],
                                   fail_silently=False)
         else:
-            logger.error(msg='Ошибка отправки новости на ящик '+animal_news['description_news'])
+            logger.error(msg='Ошибка отправки новости на ящик:{},{}'.format(animal_news['description_news'],timezone.now()))
+            NewestLogFileContent.objects.update_or_create(
+                defaults={'log_filename': 'commands.createnews', 'content': log_db.read()})
