@@ -17,16 +17,16 @@ from django.contrib import admin
 from django.urls import path,include
 from rest_framework.authtoken import views
 from .views import AnimalNewsView,AnimalAdvertisementView,AnimalAdvertisementTupeView,AnimalAdvertisementColorView,FavoritAnimal
+from rest_framework.routers import DefaultRouter
 
-
+router=DefaultRouter()
+router.register('advertisement',AnimalAdvertisementView,basename='advertisement')
 urlpatterns=[
     path('news/',AnimalNewsView.as_view(),name='news'),
-    path('advertisement/<int:pk>',AnimalAdvertisementView.as_view({'get': 'retrieve'},name='advertisement_id')),
-    path('advertisement/',AnimalAdvertisementView.as_view({'get': 'list'}),name='advertisement_all'),
     path('advertisement/type/',AnimalAdvertisementTupeView.as_view(),name='advertisement_type'),
     path('advertisement/color/',AnimalAdvertisementColorView.as_view(),name='advertisement_color'),
     path('favorit/',FavoritAnimal.as_view(),name='advertisement_favorit'),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
-    path('token/',views.obtain_auth_token,name='token'),]
+    path('token/',views.obtain_auth_token,name='token'),]+router.urls

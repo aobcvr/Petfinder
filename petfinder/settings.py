@@ -10,10 +10,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+CUSTOM_APPS=['listanimal','rest']
 
 INSTALLED_APPS = [
-    'listanimal',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -25,8 +24,8 @@ INSTALLED_APPS = [
     'djoser',
     'django_celery_results',
     'django_db_logger',
-    'drf_yasg'
-]
+    'drf_yasg',
+]+CUSTOM_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -193,4 +192,9 @@ SWAGGER_SETTINGS = {
 REDOC_SETTINGS = {
    'LAZY_RENDERING': False,
 }
-FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'Petfinder/new_fixtures')
+FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'Petfinder/fixtures')
+FIXTURES_APPS = CUSTOM_APPS
+
+FIXTURES_EXCLUDED_MODELS=['AnimalInfo','AnimalColor',
+                          'AnimalType','AnimalNews',
+                          'CustomUser']

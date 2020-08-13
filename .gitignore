@@ -9,4 +9,4 @@ celerybeat-schedule
 advertisement.log
 request_err.log
 news.log
-
+listanimal_fix.json

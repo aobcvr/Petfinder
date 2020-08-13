@@ -13,7 +13,7 @@ class AnimalInfo(models.Model):
     photos = ArrayField(models.URLField(null=True))
 
     def __str__(self):
-        return self.name
+        return self.name,self.pk
 
 
 class AnimalColor(models.Model):
