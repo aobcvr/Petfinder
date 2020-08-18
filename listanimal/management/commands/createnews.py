@@ -4,12 +4,12 @@ from listanimal.models import *
 from django.core.mail import send_mail
 import vk_api
 import requests
-from petfinder.settings import *
+from django.conf import settings
 from django.utils import timezone
 import os
 import time
 import logging
-vk_session=vk_api.VkApi(token=acess_token_attachment)
+vk_session=vk_api.VkApi(token=settings.acess_token_attachment)
 upload_url=vk_session.method('photos.getWallUploadServer',{'group_id':group_id,'v':5.95})['upload_url']
 
 logger = logging.getLogger('commands.createnews')

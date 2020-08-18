@@ -1,6 +1,5 @@
 
 import os
-from . local import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
@@ -10,7 +9,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CUSTOM_APPS=['listanimal','rest']
+CUSTOM_APPS=['listanimal']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -194,7 +193,7 @@ REDOC_SETTINGS = {
 }
 FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'Petfinder/fixtures')
 FIXTURES_APPS = CUSTOM_APPS
-
-FIXTURES_EXCLUDED_MODELS=['AnimalInfo','AnimalColor',
-                          'AnimalType','AnimalNews',
-                          'CustomUser']
+try:
+    from . local import *
+except ImportError:
+    print('import local')
