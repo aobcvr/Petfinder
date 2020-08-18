@@ -1,11 +1,10 @@
 from listanimal.parseranimal import RtNewsAnimalParser
 from django.core.management.base import BaseCommand
-from listanimal.models import AnimalNews
+from listanimal.models import *
 from django.core.mail import send_mail
-from listanimal.models import NewestLogFileContent
 import vk_api
 import requests
-from petfinder.settings import acess_token_attachment,group_id
+from petfinder.settings import *
 from django.utils import timezone
 import os
 import time

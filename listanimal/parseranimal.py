@@ -14,16 +14,16 @@ class RtNewsAnimalParser:
             for list_news in all_list_news:
                     url_news = list_news('a','link_color')
                     for url_new in url_news:
-                            url_new=base_url+url_new['href']
-                            request_url_new=session.get(url_new,headers=headers)
-                            soup_url_new=bs(request_url_new.content,'html.parser')
-                            heading=soup_url_new.find('div','article__summary').text
-                            main_text=soup_url_new.find('div','article__text')
-                            if main_text is not None:
-                                main_text_find_all=main_text.find_all('p')
-                                full_text=''
-                                for main_text_p in main_text_find_all:
-                                    full_text+=main_text_p.text
+                        url_new=base_url+url_new['href']
+                        request_url_new=session.get(url_new,headers=headers)
+                        soup_url_new=bs(request_url_new.content,'html.parser')
+                        heading=soup_url_new.find('div','article__summary').text
+                        main_text=soup_url_new.find('div','article__text')
+                        if main_text is not None:
+                            main_text_find_all=main_text.find_all('p')
+                            full_text=''
+                            for main_text_p in main_text_find_all:
+                                full_text+=main_text_p.text
                             url_media=soup_url_new.find('img','article__cover-image')
                             time_post=soup_url_new.find('time','date')['datetime']
                             optimal_date=time_post.split('-')[0]+'.'+time_post.split('-')[1]

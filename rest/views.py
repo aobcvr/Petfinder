@@ -37,7 +37,7 @@ class LoggerRequest:
 
 
 class AnimalNewsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = UrlAnimalNewsSerializer
 
     def get(self,request, *args, **kwargs ):
@@ -48,7 +48,7 @@ class AnimalNewsView(APIView):
 
 
 class AnimalAdvertisementView(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = AnimalInfoSerializer
     queryset = AnimalInfo.objects.all()
 
@@ -60,7 +60,7 @@ class AnimalAdvertisementView(viewsets.ModelViewSet):
 
 
 class AnimalAdvertisementTupeView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self,request):
         type = AnimalType.objects.all()
@@ -69,7 +69,7 @@ class AnimalAdvertisementTupeView(APIView):
 
 
 class AnimalAdvertisementColorView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self,request):
         color = AnimalColor.objects.all()
@@ -78,7 +78,7 @@ class AnimalAdvertisementColorView(APIView):
 
 
 class FavoritAnimal(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self,request):
             queriset=request.user.favorit_animal.all()
