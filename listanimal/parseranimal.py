@@ -1,17 +1,19 @@
 from bs4 import BeautifulSoup as bs
 import requests
-headers={'Accept':'*/*',
-        'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
-base_url='https://russian.rt.com'
-tag_zhivotnie=base_url+'/tag/zhivotnye'
-session=requests.Session()
+
 class RtNewsAnimalParser:
+
     def rt_news_animal(self):
-            request=session.get(tag_zhivotnie,headers=headers)
-            soup=bs(request.content,'html.parser')
-            all_list_news=soup.find_all('div','card__heading_all-new')
-            novosti = []
-            for list_news in all_list_news:
+        headers = {'Accept': '*/*',
+                   'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
+        base_url = 'https://russian.rt.com'
+        tag_zhivotnie = base_url + '/tag/zhivotnye'
+        session = requests.Session()
+        request=session.get(tag_zhivotnie,headers=headers)
+        soup=bs(request.content,'html.parser')
+        all_list_news=soup.find_all('div','card__heading_all-new')
+        novosti = []
+        for list_news in all_list_news:
                     url_news = list_news('a','link_color')
                     for url_new in url_news:
                         url_new=base_url+url_new['href']
@@ -107,4 +109,4 @@ class RtNewsAnimalParser:
                                                                 'heading': heading.strip(),
                                                                 'gallery_img': summ_gallery,
                                                                 'time_post': time_post})
-            return novosti
+        return novosti

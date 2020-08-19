@@ -196,4 +196,4 @@ FIXTURES_APPS = CUSTOM_APPS
 try:
     from . local import *
 except ImportError:
-    print('import local')
+    pass

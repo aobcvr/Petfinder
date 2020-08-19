@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from listanimal.models import AnimalInfo,AnimalColor,AnimalType
 import json,requests
 from django.core.mail import send_mail
-from petfinder.local import acess_token_attachment,group_id,login,password,client_id,client_secret
+from django.conf import settings
 from listanimal.models import NewestLogFileContent
 import vk_api
 import logging
@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
 
     def createanimal(self):
-        data = {'grant_type': 'client_credentials', 'client_id': client_id, 'client_secret': client_secret}
+        data = {'grant_type': 'client_credentials', 'client_id': settings.CLIENT_ID, 'client_secret': settings.CLIENT_SECRET}
         r = requests.post('https://api.petfinder.com/v2/oauth2/token', data=json.dumps(data), verify=False)
         token_petfinder = json.loads(r.text)['access_token']
         headers = {'Authorization': 'Bearer ' + token_petfinder}
@@ -43,9 +43,9 @@ class Command(BaseCommand):
         self.send_massage(summ_new_animals,one_animal)
 
     def vk_wall_post(self,one_animal,animal_type):
-        vk_session = vk_api.VkApi(login, password, token=acess_token_attachment)
+        vk_session = vk_api.VkApi(settings.LOGIN, settings.PASSWORD, token=settings.ACESS_TOKEN_ATTACHEMENT)
         try:
-            vk_session.method('wall.post', {'owner_id': -group_id,
+            vk_session.method('wall.post', {'owner_id': -settings.GROUP_ID,
                                         'from_group': 1,
                                         'message': 'Номер животного:{}\nТип животного:{}'
                                                    '\nВозраст:{}\nПол:{}\nГабариты:{}\nИмя:{}\nСтатус поиска:{}\n'

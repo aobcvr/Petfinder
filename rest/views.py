@@ -12,7 +12,6 @@ from drf_yasg.views import get_schema_view
 from listanimal.models import NewestLogFileContent
 from django.utils import timezone
 import logging
-from datetime import datetime
 logger = logging.getLogger('rest.views')
 
 SchemaView=get_schema_view()
@@ -25,7 +24,7 @@ class LoggerRequest:
     def __call__(self, request):
         response=self.get_response(request)
         if response.status_code==401:
-            logger.error(msg='Попытка пройти по ссылке без авторизации {},{}'.format(str(HttpRequest.get_full_path(request)),str(timezone.now())))
+            logger.error(msg='Попытка пройти по ссылке без авторизации {},{} \n'.format(str(HttpRequest.get_full_path(request)),str(timezone.now())))
             log_db=open('rest/request_err.log','r').readlines()[-100:-1]
             index=0
             for log in log_db:
@@ -37,7 +36,7 @@ class LoggerRequest:
 
 
 class AnimalNewsView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,permissions.IsAuthenticated]
     serializer_class = UrlAnimalNewsSerializer
 
     def get(self,request, *args, **kwargs ):
@@ -48,7 +47,7 @@ class AnimalNewsView(APIView):
 
 
 class AnimalAdvertisementView(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,permissions.IsAuthenticated]
     serializer_class = AnimalInfoSerializer
     queryset = AnimalInfo.objects.all()
 
@@ -60,7 +59,7 @@ class AnimalAdvertisementView(viewsets.ModelViewSet):
 
 
 class AnimalAdvertisementTupeView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,permissions.IsAuthenticated]
 
     def get(self,request):
         type = AnimalType.objects.all()
@@ -69,7 +68,7 @@ class AnimalAdvertisementTupeView(APIView):
 
 
 class AnimalAdvertisementColorView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,permissions.IsAuthenticated]
 
     def get(self,request):
         color = AnimalColor.objects.all()
@@ -78,7 +77,7 @@ class AnimalAdvertisementColorView(APIView):
 
 
 class FavoritAnimal(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,permissions.IsAuthenticated]
 
     def get(self,request):
             queriset=request.user.favorit_animal.all()

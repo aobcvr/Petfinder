@@ -6,4 +6,4 @@ djangorestframework-simplejwt==4.3.0
 djoser==2.0.3
 vk-api==11.8.0
 requests==2.9.1
-drf-yasg==0.7.1
+drf-yasg==1.17.1

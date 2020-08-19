@@ -9,8 +9,6 @@ from django.utils import timezone
 import os
 import time
 import logging
-vk_session=vk_api.VkApi(token=settings.acess_token_attachment)
-upload_url=vk_session.method('photos.getWallUploadServer',{'group_id':group_id,'v':5.95})['upload_url']
 
 logger = logging.getLogger('commands.createnews')
 log_db=open('listanimal/management/commands/news.log','r')
@@ -31,6 +29,10 @@ class Command(BaseCommand):
         self.send_news(summ_new_news,animal_news)
 
     def vk_wall_post_news(self,animal_news,summ_new_news):
+        group_id = settings.GROUP_ID
+        vk_session = vk_api.VkApi(token=settings.ACESS_TOKEN_ATTACHEMENT)
+        upload_url = vk_session.method('photos.getWallUploadServer', {'group_id': group_id, 'v': 5.95})['upload_url']
+
         summ_new_news += '\n' + ' Заголовок статьи:' + animal_news['heading']
         try:
             if animal_news.get('url_media', None) is not None:
@@ -96,7 +98,7 @@ class Command(BaseCommand):
                                                             animal_news.get('main_text', None),
                                                             animal_news['description_news'],
                                                             animal_news['heading'])})
-        except:
+        except :
             logger.error(msg='Ошибка отправки новости в вк {},{}'.format(animal_news['description_news'],str(timezone.now())))
         NewestLogFileContent.objects.update_or_create(
             log_filename='commands.createnews', defaults={'content':log_db.read()[-100:-1]})
