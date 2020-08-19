@@ -11,7 +11,7 @@ import time
 import logging
 
 logger = logging.getLogger('commands.createnews')
-log_db=open('listanimal/management/commands/news.log','r')
+log_db=open('listanimal/logger/news.log','r')
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -98,7 +98,7 @@ class Command(BaseCommand):
                                                             animal_news.get('main_text', None),
                                                             animal_news['description_news'],
                                                             animal_news['heading'])})
-        except :
+        except vk_api.VkApiError:
             logger.error(msg='Ошибка отправки новости в вк {},{}'.format(animal_news['description_news'],str(timezone.now())))
         NewestLogFileContent.objects.update_or_create(
             log_filename='commands.createnews', defaults={'content':log_db.read()[-100:-1]})

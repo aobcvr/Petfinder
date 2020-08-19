@@ -133,17 +133,17 @@ LOGGING = {
         'log_error_request': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'rest/request_err.log'
+            'filename':'listanimal/logger/request_err.log'
         },
         'error_create_news': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'listanimal/management/commands/news.log'
+            'filename':'listanimal/logger/news.log'
         },
         'error_create_advertisement': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'listanimal/management/commands/advertisement.log'
+            'filename':'listanimal/logger/advertisement.log'
         }
     },
     'loggers': {
