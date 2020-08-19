@@ -3,110 +3,73 @@ import requests
 
 class RtNewsAnimalParser:
 
+
     def rt_news_animal(self):
+        '''
+        Эта функция парсит https://russian.rt.com/tag/zhivotnye
+        all_list_news = последние 15 новостей
+        url_new = ссылка на конкретную новость
+        heading= заголовок статьи
+        main_text= основной текст находящийся на странице статьи
+        url_media= принимает в значение картинки, видео(может быть как mp4 так и с youtube)
+        time_post = время публикации статьи
+        description_news= краткое описание статьи , которое находится как в статье ,
+                            так и в ее кратном описании на общей странице статей
+        galery_media = при наличии в статье нескольких фотографий, вместо url_media
+                        принимаются все фотографии в galery_media
+        :return:
+        '''
         headers = {'Accept': '*/*',
                    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
         base_url = 'https://russian.rt.com'
         tag_zhivotnie = base_url + '/tag/zhivotnye'
         session = requests.Session()
-        request=session.get(tag_zhivotnie,headers=headers)
-        soup=bs(request.content,'html.parser')
-        all_list_news=soup.find_all('div','card__heading_all-new')
+        request = session.get(tag_zhivotnie, headers=headers)
+        soup = bs(request.content, 'html.parser')
+        all_list_news = soup.find_all('div', 'card__heading_all-new')
         novosti = []
         for list_news in all_list_news:
-                    url_news = list_news('a','link_color')
-                    for url_new in url_news:
-                        url_new=base_url+url_new['href']
-                        request_url_new=session.get(url_new,headers=headers)
-                        soup_url_new=bs(request_url_new.content,'html.parser')
-                        heading=soup_url_new.find('div','article__summary').text
-                        main_text=soup_url_new.find('div','article__text')
-                        if main_text is not None:
-                            main_text_find_all=main_text.find_all('p')
-                            full_text=''
-                            for main_text_p in main_text_find_all:
-                                full_text+=main_text_p.text
-                            url_media=soup_url_new.find('img','article__cover-image')
-                            time_post=soup_url_new.find('time','date')['datetime']
-                            optimal_date=time_post.split('-')[0]+'.'+time_post.split('-')[1]
-                            if url_media is not None:
-                                if main_text is not None:
-                                        novosti.append({'url_news': url_new,
-                                                        'description_news': list_news.text.strip(),
-                                                        'heading': heading,
-                                                        'main_text':full_text,
-                                                        'url_media': url_media['src'],
-                                                        'time_post':time_post})
-                                else:
-                                        novosti.append({'url_news':url_new,
-                                                        'description_news':list_news.text.strip(),
-                                                        'heading':heading.strip(),
-                                                        'url_media': url_media,
-                                                        'time_post': time_post})
-                            elif url_media == None:
-                                mediaplayer = soup_url_new.find('div','mediaplayer')
-                                if mediaplayer is not None:
-                                    url_media = mediaplayer.find('div').attrs['id']
-                                    kod_video=url_media.split('-')[-1]
-                                    if main_text is not None:
-                                        novosti.append({'url_news': url_new,
-                                                        'description_news': list_news.text.strip(),
-                                                        'heading': heading.strip(),
-                                                        'url_media':'https://cdnv.rt.com/russian/video/'+optimal_date+"/"+ kod_video+'.mp4',
-                                                        'main_text': full_text,
-                                                        'time_post': time_post})
-                                    else:
-                                        novosti.append({'url_news': url_new,
-                                                        'description_news': list_news.text.strip(),
-                                                        'heading': heading.strip(),
-                                                        'url_media': 'https://cdnv.rt.com/russian/video/' + optimal_date + "/" + kod_video + '.mp4',
-                                                        'time_post': time_post})
-                                elif mediaplayer == None:
-                                    url_media = soup_url_new.find_all('div', 'slide')
-                                    if url_media == []:
-                                        url_media=soup_url_new.find('iframe','cover__video')
-                                        if url_media is not None:
-                                            you_tube_url=url_media['src']
-                                            if main_text is not None:
-                                                novosti.append({'url_news': url_new,
-                                                                'description_news': list_news.text.strip(),
-                                                                'heading': heading.strip(),
-                                                                'url_media': 'https:'+you_tube_url,
-                                                                'main_text': full_text,
-                                                                'time_post': time_post})
-                                            else:
-                                                novosti.append({'url_news': url_new,
-                                                                'description_news': list_news.text.strip(),
-                                                                'heading': heading.strip(),
-                                                                'url_media': 'https:' + you_tube_url,
-                                                                'time_post': time_post})
-                                        else:
-                                            if main_text is not None:
-                                                novosti.append({'url_news': url_new,
-                                                            'description_news': list_news.text.strip(),
-                                                            'heading': heading.strip(),
-                                                            'main_text': full_text,
-                                                            'time_post': time_post})
-                                            else:
-                                                novosti.append({'url_news': url_new,
-                                                                'description_news': list_news.text.strip(),
-                                                                'heading': heading.strip(),
-                                                                'time_post': time_post})
-                                    else:
-                                        summ_gallery=[]
-                                        for gallery in url_media:
-                                            summ_gallery+={str(gallery['data-src']+' ')}
-                                            if main_text is not None:
-                                                novosti.append({'url_news': url_new,
-                                                                'description_news': list_news.text.strip(),
-                                                                'heading': heading.strip(),
-                                                                'gallery_img': summ_gallery,
-                                                                'main_text': full_text,
-                                                                'time_post': time_post})
-                                            else:
-                                                novosti.append({'url_news': url_new,
-                                                                'description_news': list_news.text.strip(),
-                                                                'heading': heading.strip(),
-                                                                'gallery_img': summ_gallery,
-                                                                'time_post': time_post})
+            url_news = list_news('a', 'link_color')
+            for url_new in url_news:
+                url_new = base_url + url_new['href']
+                request_url_new = session.get(url_new, headers=headers)
+                soup_url_new = bs(request_url_new.content, 'html.parser')
+                heading = soup_url_new.find('div', 'article__summary').text
+                main_text = soup_url_new.find('div', 'article__text')
+                url_media = soup_url_new.find('img', 'article__cover-image')
+                time_post = soup_url_new.find('time', 'date')['datetime']
+                optimal_date = time_post.split('-')[0] + '.' + time_post.split('-')[1]
+                mediaplayer_mp4 = soup_url_new.find('div', 'mediaplayer')
+                mediaplayer_you_tube = soup_url_new.find_all('div', 'slide')
+                galery_media = soup_url_new.find_all('div', 'slide')
+                set_news = {'url_news': url_new,
+                           'description_news': list_news.text.strip(),
+                           'heading': heading.strip(),
+                           'time_post': time_post,}
+                if main_text is not None:
+                    main_text_find_all = main_text.find_all('p')
+                    full_text = ''
+                    for main_text_p in main_text_find_all:
+                        full_text += main_text_p.text
+                    set_news.update({'main_text':full_text})
+                if url_media is not None:
+                    set_news.update({'url_media':url_media['src']})
+                if mediaplayer_mp4 is not None:
+                    url_media = mediaplayer_mp4.find('div').attrs['id']
+                    kod_video = url_media.split('-')[-1]
+                    url_media_new='https://cdnv.rt.com/russian/video/'+optimal_date+"/"+ kod_video+'.mp4'
+                    set_news.update({'url_media':url_media_new})
+                if mediaplayer_you_tube is []:
+                    url_media = soup_url_new.find('iframe', 'cover__video')
+                    if url_media is not None:
+                        you_tube_url ='https:'+ url_media['src']
+                        set_news.update({'url_media':you_tube_url})
+                if galery_media is []:
+                    print(galery_media)
+                    summ_gallery = []
+                    for gallery in galery_media:
+                        summ_gallery += {str(gallery['data-src'] + ' ')}
+                    set_news.update({'gallery_img':summ_gallery})
+                novosti.append(set_news)
         return novosti
+
