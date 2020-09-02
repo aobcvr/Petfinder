@@ -22,7 +22,7 @@ router=DefaultRouter()
 router.register('advertisement',AnimalAdvertisementView,basename='advertisement')
 urlpatterns=[
     path('news/',AnimalNewsView.as_view(),name='news'),
-    path('advertisement/type/',AnimalAdvertisementTupeView.as_view(),name='advertisement_type'),
+    path('advertisement/type/',AnimalAdvertisementTypeView.as_view(),name='advertisement_type'),
     path('advertisement/color/',AnimalAdvertisementColorView.as_view(),name='advertisement_color'),
     path('favorit/',FavoritAnimal.as_view(),name='advertisement_favorit'),
     path('auth/', include('djoser.urls')),

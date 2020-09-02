@@ -14,7 +14,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.createanimal()
 
-
     def createanimal(self):
         data = {'grant_type': 'client_credentials', 'client_id': settings.CLIENT_ID, 'client_secret': settings.CLIENT_SECRET}
         r = requests.post('https://api.petfinder.com/v2/oauth2/token', data=json.dumps(data), verify=False)

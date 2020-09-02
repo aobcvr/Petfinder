@@ -11,13 +11,11 @@ import time
 import logging
 
 logger = logging.getLogger('commands.createnews')
-log_db=open('listanimal/logger/news.log','r')
+log_db = open('listanimal/logger/news.log','r')
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
             self.createnews()
-
-
 
     def createnews(self):
         summ_new_news = ''
@@ -102,7 +100,6 @@ class Command(BaseCommand):
             logger.error(msg='Ошибка отправки новости в вк {},{}'.format(animal_news['description_news'],str(timezone.now())))
         NewestLogFileContent.objects.update_or_create(
             log_filename='commands.createnews', defaults={'content':log_db.read()[-100:-1]})
-
 
     def send_news(self,summ_new_news,animal_news):
         if summ_new_news != '':

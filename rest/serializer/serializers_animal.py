@@ -1,6 +1,10 @@
 from listanimal.models import AnimalInfo,AnimalColor,AnimalType
 from rest_framework import serializers
 
+'''
+Сериализует все объекты объявленией животных
+'''
+
 class AnimalTypeSerializer (serializers.ModelSerializer):
 
     class Meta:
@@ -16,8 +20,8 @@ class AnimalColorSerializer (serializers.ModelSerializer):
 
 
 class AnimalInfoSerializer(serializers.ModelSerializer):
-    color=AnimalColorSerializer()
-    animal_type=AnimalTypeSerializer()
+    color = AnimalColorSerializer()
+    animal_type = AnimalTypeSerializer()
     id = serializers.ReadOnlyField()
 
 

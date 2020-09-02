@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-
+'''
+Принимает данные и создает данные с parseranimal.py и создает содель статьи
+'''
 class AnimalNews(models.Model,):
-    url_news= models.URLField()
-    description_news= models.TextField()
+    url_news = models.URLField()
+    description_news = models.TextField()
     heading= models.TextField()
     main_text = models.TextField(null=True)
     url_media = models.URLField(null=True)

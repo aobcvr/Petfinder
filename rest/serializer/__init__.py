@@ -1,3 +1,4 @@
-from .AnimalNewsSerializer import AnimalNewsSerializer
-from .UrlAnimalAdvertSerializer import UrlAnimalAdvertSerializer
-from .UrlAnimalNewsSerializer import UrlAnimalNewsSerializer
+from .animal_news_serializer import AnimalNewsSerializer
+from .search_advert_serializer import UrlAnimalAdvertSerializer
+from .search_news_serializer import UrlAnimalNewsSerializer
+from .serializers_animal import AnimalColorSerializer,AnimalTypeSerializer,AnimalInfoSerializer
