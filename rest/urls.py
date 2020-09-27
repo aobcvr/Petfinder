@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path,include
+from django.urls import path
 from rest_framework.authtoken import views
 from rest.views import *
 from rest_framework.routers import DefaultRouter
@@ -25,7 +25,4 @@ urlpatterns=[
     path('advertisement/type/',AnimalAdvertisementTypeView.as_view(),name='advertisement_type'),
     path('advertisement/color/',AnimalAdvertisementColorView.as_view(),name='advertisement_color'),
     path('favorit/',FavoritAnimal.as_view(),name='advertisement_favorit'),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
-    path('auth/', include('djoser.urls.jwt')),
     path('token/',views.obtain_auth_token,name='token'),]+router.urls

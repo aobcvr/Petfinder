@@ -21,7 +21,7 @@ class Command(BaseCommand):
         summ_new_news = ''
         news= RtNewsAnimalParser.rt_news_animal(self)
         for animal_news in news:
-            create_object, is_created = AnimalNews.objects.update_or_create(heading=animal_news['heading'],defaults=animal_news)
+            create_object, is_created = AnimalNews.objects.get_or_create(heading=animal_news['heading'],defaults=animal_news)
             if is_created:
                 self.vk_wall_post_news(animal_news,summ_new_news)
         self.send_news(summ_new_news,animal_news)
@@ -98,7 +98,7 @@ class Command(BaseCommand):
                                                             animal_news['heading'])})
         except vk_api.VkApiError:
             logger.error(msg='Ошибка отправки новости в вк {},{}'.format(animal_news['description_news'],str(timezone.now())))
-        NewestLogFileContent.objects.update_or_create(
+        NewestLogFileContent.objects.get_or_create(
             log_filename='commands.createnews', defaults={'content':log_db.read()[-100:-1]})
 
     def send_news(self,summ_new_news,animal_news):
@@ -111,5 +111,5 @@ class Command(BaseCommand):
                                   fail_silently=False)
         else:
             logger.error(msg='Ошибка отправки новости на ящик:{},{}'.format(animal_news['description_news'],timezone.now()))
-            NewestLogFileContent.objects.update_or_create(
+            NewestLogFileContent.objects.get_or_create(
                 defaults={'log_filename': 'commands.createnews', 'content': log_db.read()})

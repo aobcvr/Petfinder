@@ -10,7 +10,7 @@ class AnimalNews(models.Model,):
     main_text = models.TextField(null=True)
     url_media = models.URLField(null=True)
     time_post = models.CharField(max_length=100)
-    gallery_img = ArrayField(models.URLField(),blank=True)
+    gallery_img = ArrayField(models.URLField(),blank=True,null=True)
 
     def __str__(self):
         return self.description_news

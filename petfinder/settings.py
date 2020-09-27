@@ -20,9 +20,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser',
-    'django_celery_results',
-    'django_db_logger',
     'drf_yasg',
 ]+CUSTOM_APPS
 
@@ -34,7 +31,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'rest.views.middlweare.LoggerRequest'
+    'rest.middlweare.LoggerRequest'
 ]
 
 ROOT_URLCONF = 'petfinder.urls'
@@ -62,7 +59,6 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 SIMPLE_JWT = {
@@ -82,9 +78,6 @@ DATABASES = {
 }
 
 
-SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
-}
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
@@ -164,11 +157,8 @@ LOGGING = {
         }
     },
 }
-#EMAIL_HOSTE=EMAIL_HOST
-#EMAIL_HOST_USER=EMAIL_HOST_USER
-#EMAIL_HOST_PASSWORD=EMAIL_HOST_PASSWORD
-#EMAIL_PORT = EMAIL_PORT
-#SECRET_KEY = SECRET_KEY
+
+
 EMAIL_USE_TLS = True
 STATIC_URL = '/static/'
 CELERY_RESULT_BACKEND = 'django-db'

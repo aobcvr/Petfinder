@@ -35,11 +35,11 @@ class RtNewsAnimalParser:
                            'description_news': list_news.text.strip(),
                            'heading': heading.strip(),
                            'time_post': time_post,}
-                RtNewsAnimalParser.add_main_text(soup_url_new,set_news)
+                RtNewsAnimalParser.add_main_text(set_news,soup_url_new)
                 RtNewsAnimalParser.add_url_media(set_news,soup_url_new)
-                RtNewsAnimalParser.add_mediaplayer_mp4(set_news,time_post,time_post)
+                RtNewsAnimalParser.add_mediaplayer_mp4(set_news,time_post,soup_url_new)
                 RtNewsAnimalParser.add_mediaplayer_you_tube(soup_url_new,set_news)
-                RtNewsAnimalParser.add_galery_media(set_news,soup_url_new)
+                RtNewsAnimalParser.add_galery_media(soup_url_new,set_news)
                 novosti.append(set_news)
         return novosti
 
@@ -55,7 +55,7 @@ class RtNewsAnimalParser:
                 full_text += main_text_p.text
             set_news.update({'main_text': full_text})
 
-    def add_url_media(url_media,set_news,soup_url_new):
+    def add_url_media(set_news,soup_url_new):
         '''
         url_media= принимает в значение картинки, видео(может быть как mp4 так и с youtube)
         '''
