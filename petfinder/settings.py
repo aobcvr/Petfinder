@@ -126,17 +126,17 @@ LOGGING = {
         'log_error_request': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'listanimal/logger/request_err.log'
+            'filename':'logger/request_err.log'
         },
         'error_create_news': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'listanimal/logger/news.log'
+            'filename':'logger/news.log'
         },
         'error_create_advertisement': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'listanimal/logger/advertisement.log'
+            'filename':'logger/advertisement.log'
         }
     },
     'loggers': {
@@ -183,7 +183,14 @@ REDOC_SETTINGS = {
 }
 FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'Petfinder/fixtures')
 FIXTURES_APPS = CUSTOM_APPS
+
+
 try:
     from . local import *
 except ImportError:
     pass
+
+LOG_DIR = os.path.join(BASE_DIR,'logger')
+
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
