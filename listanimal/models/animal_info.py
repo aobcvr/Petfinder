@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-'''
-Принимает на вход данные содзавая из них объявления из приемника petfinder
-'''
+
 class AnimalInfo(models.Model):
+    '''
+    создает объявления о животных, форма создана под форму животных с сайта petfinder
+    '''
     number = models.CharField(max_length=200)
     animal_type = models.ForeignKey('AnimalType',on_delete=models.PROTECT,null=True)
     age = models.CharField(max_length=200)
@@ -19,6 +20,9 @@ class AnimalInfo(models.Model):
 
 
 class AnimalColor(models.Model):
+    '''
+    во время сбора данных, в эту модель попадают цвета животных
+    '''
     primary = models.CharField(max_length=200,null=True)
 
     def __str__(self):
@@ -26,7 +30,18 @@ class AnimalColor(models.Model):
 
 
 class AnimalType(models.Model):
+    '''
+    во время сбора данных, в эту модель попадают цвета животных
+    '''
     animal_type = models.CharField(max_length=200,null=True)
 
     def __str__(self):
         return self.animal_type
+
+class Comment(models.Model):
+    '''
+    Комментарии к животным , создаются пользователями сервиса
+    '''
+    animal = models.ForeignKey('AnimalInfo', blank=True, null=True, on_delete=models.PROTECT)
+    comment = models.CharField(max_length=200,blank= True,null=True)
+

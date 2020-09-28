@@ -14,7 +14,7 @@ class LoggerRequest:
         response = self.get_response(request)
         if response.status_code==401:
             logger.error(msg='Попытка пройти по ссылке без авторизации {},{} \n'.format(str(HttpRequest.get_full_path(request)),str(timezone.now())))
-            log_db=open('listanimal/logger/request_err.log','r').readlines()[-100:-1]
+            log_db=open('logger/request_err.log','r').readlines()[-100:-1]
             index = 0
             for log in log_db:
                 log_db[index]=log.rstrip()

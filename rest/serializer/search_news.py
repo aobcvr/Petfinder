@@ -2,10 +2,11 @@ from rest_framework import serializers
 from django.db.models import Q
 from listanimal.models import AnimalNews
 
-'''
-выводит новости в которых есть введенное предложение в search_line
-'''
+
 class UrlAnimalNewsSerializer(serializers.Serializer):
+    '''
+    выводит новости в которых есть введенное предложение в search_line
+    '''
     search_line = serializers.CharField()
 
     def search_news(self):

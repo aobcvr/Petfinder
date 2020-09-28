@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from django.db.models import Q
 from listanimal.models import AnimalInfo,AnimalColor,AnimalType
-'''
-выводит животных, которые попадают под фильтры
-'''
+
 class UrlAnimalAdvertSerializer(serializers.Serializer):
+    '''
+    выводит животных, которые попадают под фильтры
+    '''
     size = serializers.ChoiceField(default=None,choices=[('Large','Large'),('Medium','Medium'),('Small','Small')])
     color = serializers.SlugRelatedField(default=None,queryset=AnimalColor.objects.all(),slug_field='primary',many=True)
     animaltype = serializers.PrimaryKeyRelatedField(default=None,queryset=AnimalType.objects.all(),many=True)

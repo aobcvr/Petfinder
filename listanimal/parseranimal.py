@@ -65,7 +65,7 @@ class RtNewsAnimalParser:
 
     def add_mediaplayer_mp4(set_news,time_post,soup_url_new):
         '''
-        url_media= принимает в значение картинки, видео(может быть как mp4 так и с youtube)
+        url_media = видео(mp4)
         '''
         optimal_date = time_post.split('-')[0] + '.' + time_post.split('-')[1]
         mediaplayer_mp4 = soup_url_new.find('div', 'mediaplayer')
@@ -77,7 +77,7 @@ class RtNewsAnimalParser:
 
     def add_mediaplayer_you_tube(soup_url_new,set_news):
         '''
-        url_media= принимает в значение картинки, видео(может быть как mp4 так и с youtube)
+        url_media = видео(youtube)
         '''
         mediaplayer_you_tube = soup_url_new.find_all('div', 'slide')
         if mediaplayer_you_tube is []:

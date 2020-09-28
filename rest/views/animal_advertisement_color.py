@@ -5,9 +5,6 @@ from rest_framework.response import Response
 from listanimal.models import AnimalColor
 from rest.serializer import AnimalColorSerializer
 
-import logging
-
-logger = logging.getLogger('rest.views')
 
 
 class AnimalAdvertisementColorView(APIView):

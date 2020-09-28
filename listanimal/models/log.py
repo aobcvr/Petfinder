@@ -3,6 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class NewestLogFileContent(models.Model):
+    '''
+    Моедль создана для логирования ошибок приложения
+    '''
     log_filename = models.CharField(max_length=200, verbose_name=_('название файла логера'))
     content = models.TextField(verbose_name=_('Запись файла'), null=True)
     last_updated = models.DateTimeField(auto_now=True)

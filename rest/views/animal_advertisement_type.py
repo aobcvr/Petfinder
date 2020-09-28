@@ -5,9 +5,6 @@ from rest_framework.response import Response
 from listanimal.models import AnimalType
 from rest.serializer import AnimalTypeSerializer
 
-import logging
-
-logger = logging.getLogger('rest.views')
 
 
 class AnimalAdvertisementTypeView(APIView):
