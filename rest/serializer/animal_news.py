@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 class AnimalNewsSerializer(serializers.ModelSerializer):
 
-        class Meta:
-             model = AnimalNews
-             fields = '__all__'
+    class Meta:
+         model = AnimalNews
+         fields = '__all__'
 

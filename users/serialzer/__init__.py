@@ -1,1 +1,2 @@
 from .create_user_serialazer import CreateUserProfileSerializer
+from .email_auth_serialzer import EmailAuthSerialazer

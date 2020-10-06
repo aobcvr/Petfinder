@@ -1,11 +1,8 @@
 from django.core.management.base import BaseCommand
-from listanimal.models import AnimalInfo,AnimalColor,AnimalType
-import json,requests
+from listanimal.models import AnimalInfo, AnimalColor, AnimalType, NewestLogFileContent
 from django.core.mail import send_mail
 from django.conf import settings
-from listanimal.models import NewestLogFileContent
-import vk_api
-import logging
+import vk_api, json, requests, logging
 from django.utils import timezone
 logger = logging.getLogger('commands.createanimal')
 
@@ -18,7 +15,7 @@ class Command(BaseCommand):
         data = {'grant_type': 'client_credentials', 'client_id': settings.CLIENT_ID, 'client_secret': settings.CLIENT_SECRET}
         r = requests.post('https://api.petfinder.com/v2/oauth2/token', data=json.dumps(data), verify=False)
         token_petfinder = json.loads(r.text)['access_token']
-        headers = {'Authorization': 'Bearer ' + token_petfinder}
+        headers = {'Authorization':'Bearer ' + token_petfinder}
         r = requests.get('https://api.petfinder.com/v2/animals?page=1', headers=headers, verify=False)
         j = json.loads(r.text)
         dict_animal = j.get('animals')
@@ -41,7 +38,7 @@ class Command(BaseCommand):
                 self.vk_wall_post(one_animal,animal_type)
         self.send_massage(summ_new_animals,one_animal)
 
-    def vk_wall_post(self,one_animal,animal_type):
+    def vk_wall_post(self, one_animal, animal_type):
         vk_session = vk_api.VkApi(settings.LOGIN, settings.PASSWORD, token=settings.ACESS_TOKEN_ATTACHEMENT)
         try:
             vk_session.method('wall.post', {'owner_id': -settings.GROUP_ID,
@@ -66,19 +63,12 @@ class Command(BaseCommand):
             NewestLogFileContent.objects.update_or_create(log_filename='commands.advertisement',defaults={'content':log_db.readlines()[-100:-1]})
             log_db.close()
 
-    def send_massage(self,summ_new_animals,one_animal):
+    def send_massage(self, summ_new_animals, one_animal):
+
         if summ_new_animals != '':
-            send_mail('новое объявление епта', summ_new_animals, 'dkdjjdkd@gmail.com', ['paveligin1861@gmail.com'],
+            send_mail('новое объявление епта', summ_new_animals, settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
                       fail_silently=False)
         elif summ_new_animals == '':
             send_mail('нет объявленией', 'объявлений нет', 'dkdjjdkd@gmail.com', ['paveligin1861@gmail.com'],
                       fail_silently=False)
         return one_animal
-
-
-
-
-
-
-
-

@@ -12,13 +12,13 @@ logger = logging.getLogger('rest.views')
 SchemaView=get_schema_view()
 
 
-
 class AnimalAdvertisementView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = AnimalInfoSerializer
     queryset = AnimalInfo.objects.all()
 
-    def list(self,request, *args, **kwargs ):
+    def list(self,request, *args, **kwargs):
+
         serializer = UrlAnimalAdvertSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         self.queryset = serializer.search_advert()

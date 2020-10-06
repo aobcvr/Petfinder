@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.db.models import Q
-from listanimal.models import AnimalInfo,AnimalColor,AnimalType
+from listanimal.models import AnimalInfo, AnimalColor, AnimalType
 
 class UrlAnimalAdvertSerializer(serializers.Serializer):
     '''
@@ -11,13 +11,14 @@ class UrlAnimalAdvertSerializer(serializers.Serializer):
     animaltype = serializers.PrimaryKeyRelatedField(default=None,queryset=AnimalType.objects.all(),many=True)
 
     def search_advert(self):
-        data = self.validated_data
-        val=Q()
-        if data['size'] is not None:
-            val &= Q(size=self.validated_data['size'])
-        if data['color']  !=[]:
-            val &= Q(color__in=self.validated_data['color'])
-        if data['animaltype'] != []:
-            val &=Q(animal_type__in=self.validated_data['animaltype'])
+
+        validated_data = self.validated_data
+        val = Q()
+        if validated_data['size'] is not None:
+            val &= Q(size = validated_data['size'])
+        if validated_data['color']  !=[]:
+            val &= Q(color__in = validated_data['color'])
+        if validated_data['animaltype'] != []:
+            val &= Q(animal_type__in = validated_data['animaltype'])
         return AnimalInfo.objects.filter(val)
 

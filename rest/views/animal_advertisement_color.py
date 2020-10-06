@@ -6,11 +6,10 @@ from listanimal.models import AnimalColor
 from rest.serializer import AnimalColorSerializer
 
 
-
 class AnimalAdvertisementColorView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self,request):
+    def get(self, request):
         color = AnimalColor.objects.all()
         serializer = AnimalColorSerializer(color,many=True)
         return Response(serializer.data)

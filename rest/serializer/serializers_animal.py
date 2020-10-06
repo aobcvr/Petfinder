@@ -1,6 +1,5 @@
-from listanimal.models import AnimalInfo,AnimalColor,AnimalType,Comment
+from listanimal.models import AnimalInfo, AnimalColor, AnimalType, Comment
 from rest_framework import serializers
-
 
 
 class AnimalTypeSerializer (serializers.ModelSerializer):
@@ -11,6 +10,7 @@ class AnimalTypeSerializer (serializers.ModelSerializer):
         model = AnimalType
         fields='__all__'
 
+
 class AnimalColorSerializer (serializers.ModelSerializer):
     '''
     Сериализует все цвета животных
@@ -19,14 +19,13 @@ class AnimalColorSerializer (serializers.ModelSerializer):
 
     class Meta:
         model = AnimalColor
-        fields='__all__'
+        fields = '__all__'
 
 
 class AnimalInfoSerializer(serializers.ModelSerializer):
     color = AnimalColorSerializer()
     animal_type = AnimalTypeSerializer()
     id = serializers.ReadOnlyField()
-
 
     class Meta:
         model = AnimalInfo
@@ -39,4 +38,4 @@ class CommentSerializer (serializers.ModelSerializer):
     '''
     class Meta:
         model = Comment
-        fields='__all__'
+        fields = '__all__'

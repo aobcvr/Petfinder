@@ -7,13 +7,11 @@ from rest.serializer import CommentSerializer
 from listanimal.models import Comment
 
 
-
-
-
 class CommentAnimal(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self,request,pk):
+    def get(self, pk):
+
         queriset = Comment.objects.filter(animal=pk)
         comments = CommentSerializer(queriset, many=True).data
         return Response(comments)

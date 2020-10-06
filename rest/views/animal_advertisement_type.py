@@ -6,11 +6,11 @@ from listanimal.models import AnimalType
 from rest.serializer import AnimalTypeSerializer
 
 
-
 class AnimalAdvertisementTypeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self,request):
+    def get(self):
+
         type = AnimalType.objects.all()
         serializer = AnimalTypeSerializer(type,many=True)
         return Response(serializer.data)
