@@ -4,6 +4,9 @@ from users.serialzer import CreateUserProfileSerializer
 
 
 class CreateUser(viewsets.ViewSet):
+    '''
+    Принимает username и password,password2 ,при несовпадении с password и password2 возвращается ошибка
+    '''
     permission_classes = [permissions.AllowAny]
     serializer_class = CreateUserProfileSerializer
 

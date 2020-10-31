@@ -1,5 +1,6 @@
-from rest_framework import  viewsets, permissions
-from users.serialzer import EmailAuthSerialazer,EmailSaveSerialazer
+from rest_framework import  viewsets
+from users.serialzer import EmailAuthSerialazer
+from users.models import EmailAuth
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
@@ -7,7 +8,9 @@ class EmailAuth(viewsets.ViewSet):
 
     @action(methods=['post'],detail=True,permission_classes=['IsAuthenticated'])
     def create(self,request):
-
+        '''
+        При введении пароля пользователя и email отправляет сообщение на email
+        '''
         serialazer = EmailAuthSerialazer(data=request.data)
         serialazer.is_valid(raise_exception=True)
         if serialazer.validated_data['password'] != request.user.password:
@@ -15,8 +18,10 @@ class EmailAuth(viewsets.ViewSet):
         serialazer.email_auth(validated_data=serialazer.validated_data,request=request)
         return Response({'status':'check your email'})
 
-
+    @action(methods=['get'],detail=True,permission_classes=['AllowAny'])
     def get(self,request):
-        serialazer = EmailSaveSerialazer(data=request.data)
-        serialazer.is_valid(raise_exception=True)
-        serialazer.email_save(validated_data=serialazer.validated_data)
+        '''Принимает запрос и привязывает email при совпадении ключей'''
+        norm_key = EmailAuth.objects.get(key=request.GET['key'])
+        norm_key.user.email = norm_key.email_e
+        norm_key.user.save(update_fields=['email'])
+        return Response({'status':'email is auth'})
