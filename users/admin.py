@@ -1,4 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models import EmailAuthAsk, PasswordReset
 
-admin.site.register(EmailAuth)
+admin.site.register(EmailAuthAsk)
+admin.site.register(PasswordReset)

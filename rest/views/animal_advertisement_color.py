@@ -11,5 +11,5 @@ class AnimalAdvertisementColorView(APIView):
 
     def get(self, request):
         color = AnimalColor.objects.all()
-        serializer = AnimalColorSerializer(color,many=True)
+        serializer = AnimalColorSerializer(color, many=True)
         return Response(serializer.data)

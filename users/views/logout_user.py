@@ -4,10 +4,10 @@ from django.contrib.auth import logout
 
 
 class LogoutUser(viewsets.ViewSet):
-    '''
+    """
     выход пользователя из аккаунта
-    '''
+    """
 
-    def logout_user(self,request):
+    def logout_user(self, request):
         logout(request)
-        return Response({'status':'successful logout'})
+        return Response({'status': 'successful logout'})

@@ -14,15 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from rest.views import *
+
+from rest.views import AnimalAdvertisementView, AnimalNewsView, \
+    AnimalAdvertisementTypeView, AnimalAdvertisementColorView, FavoritAnimal, CommentAnimal
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('advertisement',AnimalAdvertisementView,basename='advertisement')
+router.register('advertisement', AnimalAdvertisementView, basename='advertisement')
 
-urlpatterns=[
-    path('news/',AnimalNewsView.as_view(),name='news'),
-    path('advertisement/type/',AnimalAdvertisementTypeView.as_view(),name='advertisement_type'),
-    path('advertisement/color/',AnimalAdvertisementColorView.as_view(),name='advertisement_color'),
-    path('favorit/',FavoritAnimal.as_view(),name='advertisement_favorit'),
-    path('comment/<pk>',CommentAnimal.as_view()),]+router.urls
+urlpatterns = [
+    path('news/', AnimalNewsView.as_view(), name='news'),
+    path('advertisement/type/', AnimalAdvertisementTypeView.as_view(), name='advertisement_type'),
+    path('advertisement/color/', AnimalAdvertisementColorView.as_view(), name='advertisement_color'),
+    path('favorit/', FavoritAnimal.as_view(), name='advertisement_favorit'),
+    path('comment/<pk>', CommentAnimal.as_view())]+router.urls

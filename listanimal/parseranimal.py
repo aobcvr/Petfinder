@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup as bs
 import requests
 
+
 class RtNewsAnimalParser:
 
-
     def rt_news_animal(self):
-        '''
+        """
         Эта функция парсит https://russian.rt.com/tag/zhivotnye
         all_list_news = последние 15 новостей
         url_new = ссылка на конкретную новость
@@ -13,7 +13,7 @@ class RtNewsAnimalParser:
         time_post = время публикации статьи
         description_news= краткое описание статьи , которое находится
         как в статье ,так и в ее кратном описании на общей странице статей
-        '''
+        """
         headers = {'Accept': '*/*',
                    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
         base_url = 'https://russian.rt.com'
@@ -32,9 +32,9 @@ class RtNewsAnimalParser:
                 heading = soup_url_new.find('div', 'article__summary').text
                 time_post = soup_url_new.find('time', 'date')['datetime']
                 set_news = {'url_news': url_new,
-                           'description_news': list_news.text.strip(),
-                           'heading': heading.strip(),
-                           'time_post': time_post,}
+                            'description_news': list_news.text.strip(),
+                            'heading': heading.strip(),
+                            'time_post': time_post}
                 RtNewsAnimalParser.add_main_text(set_news, soup_url_new)
                 RtNewsAnimalParser.add_url_media(set_news, soup_url_new)
                 RtNewsAnimalParser.add_mediaplayer_mp4(set_news, time_post, soup_url_new)
@@ -44,9 +44,9 @@ class RtNewsAnimalParser:
         return novosti
 
     def add_main_text(set_news, soup_url_new):
-        '''
+        """
         main_text= основной текст находящийся на странице статьи
-        '''
+        """
         main_text = soup_url_new.find('div', 'article__text')
         if main_text is not None:
             main_text_find_all = main_text.find_all('p')
@@ -56,17 +56,17 @@ class RtNewsAnimalParser:
             set_news.update({'main_text': full_text})
 
     def add_url_media(set_news, soup_url_new):
-        '''
+        """
         url_media= принимает в значение картинки, видео(может быть как mp4 так и с youtube)
-        '''
+        """
         url_media = soup_url_new.find('img', 'article__cover-image')
         if url_media is not None:
             set_news.update({'url_media': url_media['src']})
 
     def add_mediaplayer_mp4(set_news, time_post, soup_url_new):
-        '''
+        """
         url_media = видео(mp4)
-        '''
+        """
         optimal_date = time_post.split('-')[0] + '.' + time_post.split('-')[1]
         mediaplayer_mp4 = soup_url_new.find('div', 'mediaplayer')
         if mediaplayer_mp4 is not None:
@@ -76,9 +76,9 @@ class RtNewsAnimalParser:
             set_news.update({'url_media': url_media_new})
 
     def add_mediaplayer_you_tube(soup_url_new, set_news):
-        '''
+        """
         url_media = видео(youtube)
-        '''
+        """
         mediaplayer_you_tube = soup_url_new.find_all('div', 'slide')
         if mediaplayer_you_tube is []:
             url_media = soup_url_new.find('iframe', 'cover__video')
@@ -87,10 +87,10 @@ class RtNewsAnimalParser:
                 set_news.update({'url_media': you_tube_url})
 
     def add_galery_media(soup_url_new, set_news):
-        '''
+        """
         galery_media = при наличии в статье нескольких фотографий, вместо url_media
                         принимаются все фотографии в galery_media
-        '''
+        """
         galery_media = soup_url_new.find_all('div', 'slide')
         if galery_media is []:
             print(galery_media)

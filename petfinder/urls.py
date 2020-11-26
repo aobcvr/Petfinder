@@ -14,15 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from .yasg import urlpatterns as yasg_url
-
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rest/',include('rest.urls')),
-    path('users/',include('users.urls'))
-    ]
+    path('rest/', include('rest.urls')),
+    path('users/', include('users.urls'))
+]
 
-urlpatterns+=yasg_url
+urlpatterns += yasg_url

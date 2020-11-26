@@ -2,6 +2,8 @@ from rest_framework.test import APITestCase
 from django.shortcuts import reverse
 from django.conf import settings
 import os
+
+
 def get_fixtures(path=settings.FIXTURES_DIR):
     '''
     Собрать список фикстур из new_fixtures для использования
@@ -32,43 +34,33 @@ class TestApiPetfinder(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
     def test_animal_news(self):
-
         url = reverse('news')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 401)
         self.authorize()
-        response = self.client.get(url+'?search_line=нас')
+        response = self.client.get(url + '?search_line=нас')
         self.assertEqual(response.status_code, 200)
 
     def test_advertisement_all(self):
-
         url = '/rest/advertisement/'
         self.authorize()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_advertisement_type(self):
-
         url = reverse('advertisement_type')
         self.authorize()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_advertisement_color(self):
-
         url = reverse('advertisement_color')
         self.authorize()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_advertisement_favorit(self):
-
         url = reverse('advertisement_favorit')
         self.authorize()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-
-
-
-
-

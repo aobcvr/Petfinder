@@ -12,6 +12,6 @@ class CommentAnimal(APIView):
 
     def get(self, pk):
 
-        queriset = Comment.objects.filter(animal=pk)
-        comments = CommentSerializer(queriset, many=True).data
+        queryset = Comment.objects.filter(animal=pk)
+        comments = CommentSerializer(queryset, many=True).data
         return Response(comments)
