@@ -1,9 +1,13 @@
+import vk_api
+import json
+import requests
+import logging
+
 from django.core.management.base import BaseCommand
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 
-import vk_api, json, requests, logging
 
 from listanimal.models import AnimalInfo, AnimalColor,\
                               AnimalType, NewestLogFileContent
@@ -59,6 +63,9 @@ class Command(BaseCommand):
         Command.send_massage(summ_new_animals, one_animal)
 
     def vk_wall_post(self, one_animal, animal_type):
+        """
+        функция отправляет созданное объявление в новостную ленту сообщества
+        """
         vk_session = vk_api.VkApi(settings.LOGIN, settings.PASSWORD,
                                   token=settings.ACESS_TOKEN_ATTACHEMENT)
         try:
@@ -90,6 +97,9 @@ class Command(BaseCommand):
             log_db.close()
 
     def send_massage(self, summ_new_animals, one_animal):
+        """
+        Функция для рассылки почтовых сообщений пользователям
+        """
 
         if summ_new_animals != '':
             send_mail('новое объявление епта', summ_new_animals,

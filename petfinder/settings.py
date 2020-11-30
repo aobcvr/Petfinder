@@ -175,7 +175,7 @@ SWAGGER_SETTINGS = {
 REDOC_SETTINGS = {
    'LAZY_RENDERING': False,
 }
-FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'fixtures')
+FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'Petfinder/fixtures')
 FIXTURES_APPS = CUSTOM_APPS
 
 

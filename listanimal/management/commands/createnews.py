@@ -1,8 +1,12 @@
+import vk_api
+import logging
+import time
+import os
+import requests
 from listanimal.parseranimal import RtNewsAnimalParser
 from django.core.management.base import BaseCommand
 from listanimal.models import NewestLogFileContent, AnimalNews
 from django.core.mail import send_mail
-import vk_api, logging, time, os, requests
 from django.conf import settings
 from django.utils import timezone
 
@@ -33,12 +37,36 @@ class Command(BaseCommand):
                                             vk_session, upload_url)
                 summ_new_news += '\n' + ' Заголовок статьи:' + \
                                  animal_news['heading']
-        VkWallPostNews.send_news(self, summ_new_news, animal_news)
+        Command.send_news(self, summ_new_news, animal_news)
+
+    def send_news(self, summ_new_news, animal_news):
+        # send_news - отправляет сообщения пользователям сервиса
+        if summ_new_news != '':
+            send_mail('новая новость ', summ_new_news,
+                      settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
+                      fail_silently=False)
+        elif summ_new_news == '':
+            send_mail('нет новостей', 'новостей нет',
+                      settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
+                      fail_silently=False)
+        else:
+            logger.error(msg='Ошибка отправки новости на ящик:{},'
+                             '{}'.format(animal_news['description_news'],
+                                         timezone.now()))
+            NewestLogFileContent.objects.get_or_create(
+                defaults={'log_filename': 'commands.createnews',
+                          'content': log_db.read()})
 
 
 class VkWallPostNews():
+    """
+    Класс предоставляет функции для выкладывания новостей
+    с разным содержанием, а также каждая функция просматривает
+    наличие или отсутствие основоного текста(main_text)
+    """
     def vk_wall_news(self, animal_news, group_id, vk_session, upload_url):
-
+        # vk_wall_news - осуществляет определение через какую функцию
+        # будет обрабатываться новость
         if animal_news.get('url_media', None) is not None:
             if animal_news['url_media'].endswith('.mp4'):
                 VkWallPostNews.vk_wall_news_mp4(self,
@@ -58,6 +86,8 @@ class VkWallPostNews():
                                                       vk_session, group_id)
 
     def vk_wall_news_mp4(self, animal_news, group_id, vk_session):
+        # vk_wall_news_mp4 - выкладывает новость, если в ней есть
+        # mp4 файл в новости
 
         news = {'owner_id': -group_id, 'from_group': 1, 'message': '{}\n'
                 'Ссылка на оригинал:{}\n Вложение:{}\n{}\n{}\n '
@@ -72,7 +102,8 @@ class VkWallPostNews():
             vk_session.method('wall.post', news)
 
     def vk_wall_news_photo(self, animal_news, upload_url, vk_session, group_id):
-
+        # vk_wall_news_photo - выкладывает новость, при наличии в ней
+        # 1-й фотографии в новости
         photo = requests.get(animal_news['url_media'])
         images = open('images.jpg', 'wb')
         images.write(photo.content)
@@ -99,7 +130,8 @@ class VkWallPostNews():
         os.remove('images.jpg')
 
     def vk_wall_news_gallery_img(self, animal_news, upload_url, vk_session, group_id):
-
+        # vk_wall_news_gallery_img - выкладывает новость при наличии
+        # галлереи фотографий в новости
         saved_gallery = ''
         for one_img in animal_news['gallery_img']:
             photo = requests.get(one_img.replace(' ', ''))
@@ -129,7 +161,8 @@ class VkWallPostNews():
         vk_session.method('wall.post', news)
 
     def vk_wall_without_media_file(self, animal_news, vk_session, group_id):
-
+        # vk_wall_without_media_file - выкладывает новость при
+        # отсутствии медиафайлов
         news = {'owner_id': -group_id,
                 'from_group': 1, 'message': '{}\nСсылка на оригинал:{}\n'
                 'Вложение:{}\n{}\n{}'.format(
@@ -139,21 +172,3 @@ class VkWallPostNews():
                                             animal_news['description_news'],
                                             animal_news['heading'])}
         vk_session.method('wall.post', news)
-
-    def send_news(self, summ_new_news, animal_news):
-
-        if summ_new_news != '':
-            send_mail('новая новость ', summ_new_news,
-                      settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
-                      fail_silently=False)
-        elif summ_new_news == '':
-            send_mail('нет новостей', 'новостей нет',
-                      settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
-                      fail_silently=False)
-        else:
-            logger.error(msg='Ошибка отправки новости на ящик:{},'
-                             '{}'.format(animal_news['description_news'],
-                                         timezone.now()))
-            NewestLogFileContent.objects.get_or_create(
-                defaults={'log_filename': 'commands.createnews',
-                          'content': log_db.read()})

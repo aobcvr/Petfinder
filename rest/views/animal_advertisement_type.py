@@ -9,7 +9,7 @@ from rest.serializer import AnimalTypeSerializer
 class AnimalAdvertisementTypeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self):
+    def get(self, request):
 
         type = AnimalType.objects.all()
         serializer = AnimalTypeSerializer(type, many=True)
