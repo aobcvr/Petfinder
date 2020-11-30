@@ -15,7 +15,8 @@ class RtNewsAnimalParser:
         как в статье ,так и в ее кратном описании на общей странице статей
         """
         headers = {'Accept': '*/*',
-                   'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
+                   'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; '
+                   'Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
         base_url = 'https://russian.rt.com'
         tag_zhivotnie = base_url + '/tag/zhivotnye'
         session = requests.Session()
@@ -37,8 +38,10 @@ class RtNewsAnimalParser:
                             'time_post': time_post}
                 RtNewsAnimalParser.add_main_text(set_news, soup_url_new)
                 RtNewsAnimalParser.add_url_media(set_news, soup_url_new)
-                RtNewsAnimalParser.add_mediaplayer_mp4(set_news, time_post, soup_url_new)
-                RtNewsAnimalParser.add_mediaplayer_you_tube(soup_url_new, set_news)
+                RtNewsAnimalParser.add_mediaplayer_mp4(set_news,
+                                                       time_post, soup_url_new)
+                RtNewsAnimalParser.add_mediaplayer_you_tube(soup_url_new,
+                                                            set_news)
                 RtNewsAnimalParser.add_galery_media(soup_url_new, set_news)
                 novosti.append(set_news)
         return novosti
@@ -57,7 +60,8 @@ class RtNewsAnimalParser:
 
     def add_url_media(set_news, soup_url_new):
         """
-        url_media= принимает в значение картинки, видео(может быть как mp4 так и с youtube)
+        url_media= принимает в значение картинки, видео
+        (может быть как mp4 так и с youtube)
         """
         url_media = soup_url_new.find('img', 'article__cover-image')
         if url_media is not None:
@@ -72,7 +76,8 @@ class RtNewsAnimalParser:
         if mediaplayer_mp4 is not None:
             url_media = mediaplayer_mp4.find('div').attrs['id']
             kod_video = url_media.split('-')[-1]
-            url_media_new = 'https://cdnv.rt.com/russian/video/' + optimal_date + "/" + kod_video + '.mp4'
+            url_media_new = 'https://cdnv.rt.com/russian/video/' + \
+                            optimal_date + "/" + kod_video + '.mp4'
             set_news.update({'url_media': url_media_new})
 
     def add_mediaplayer_you_tube(soup_url_new, set_news):
@@ -88,13 +93,11 @@ class RtNewsAnimalParser:
 
     def add_galery_media(soup_url_new, set_news):
         """
-        galery_media = при наличии в статье нескольких фотографий, вместо url_media
-                        принимаются все фотографии в galery_media
+        galery_media = при наличии в статье нескольких фотографий,
+        вместо url_media принимаются все фотографии в galery_media
         """
         galery_media = soup_url_new.find_all('div', 'slide')
-        if galery_media is []:
-            print(galery_media)
-            summ_gallery = []
-            for gallery in galery_media:
-                summ_gallery += {str(gallery['data-src'] + ' ')}
-            set_news.update({'gallery_img': summ_gallery})
+        summ_gallery = []
+        for gallery in galery_media:
+            summ_gallery += {str(gallery['data-src'] + ' ')}
+        set_news.update({'gallery_img': summ_gallery})
