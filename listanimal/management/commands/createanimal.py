@@ -1,4 +1,3 @@
-import vk_api
 import json
 import requests
 import logging
@@ -6,13 +5,10 @@ import logging
 from django.core.management.base import BaseCommand
 from django.core.mail import send_mail
 from django.conf import settings
-from django.utils import timezone
 
-
-from listanimal.models import AnimalInfo, AnimalColor,\
-                              AnimalType, NewestLogFileContent
-
-
+from listanimal.models import AnimalInfo, AnimalColor,AnimalType
+from listanimal.management.service.vk_wall_post_animal import VkWallPostAnimal
+from listanimal.management.service.send_mail import SendMail
 logger = logging.getLogger('commands.createanimal')
 
 
@@ -59,54 +55,5 @@ class Command(BaseCommand):
             if is_created:
                 summ_new_animals += '\n' + 'Новое объявление:' \
                                     + str(animal_type) + '' + defaults['name']
-                Command.vk_wall_post(one_animal, animal_type)
-        Command.send_massage(summ_new_animals, one_animal)
-
-    def vk_wall_post(self, one_animal, animal_type):
-        """
-        функция отправляет созданное объявление в новостную ленту сообщества
-        """
-        vk_session = vk_api.VkApi(settings.LOGIN, settings.PASSWORD,
-                                  token=settings.ACESS_TOKEN_ATTACHEMENT)
-        try:
-            message = 'Номер животного:{}\n'
-            'Тип животного:{}\nВозраст:{}\nПол:{}\nГабариты:{}\n'
-            'Имя:{}\nСтатус поиска:{}\nЦвет:{}\n'
-            'Фотографии{}'.format(
-                                    one_animal.get('number', None),
-                                    animal_type,
-                                    one_animal['age'], one_animal['gender'],
-                                    one_animal['size'], one_animal['name'],
-                                    one_animal['status'],
-                                    one_animal.get('color', None),
-                                    one_animal.get('photos', None)
-                                )
-
-            vk_session.method('wall.post', {'owner_id': -settings.GROUP_ID,
-                                            'from_group': 1,
-                                            'message': message})
-
-        except vk_api.VkApiError:
-            logger.error(msg='Ошибка отправки объявления '
-                             'в вк:{},{}'.format(one_animal['name'],
-                                                 timezone.now()))
-            log_db = open('listanimal/logger/advertisement.log', 'r')
-            NewestLogFileContent.objects.update_or_create(
-                            log_filename='commands.advertisement',
-                            defaults={'content': log_db.readlines()[-100:-1]})
-            log_db.close()
-
-    def send_massage(self, summ_new_animals, one_animal):
-        """
-        Функция для рассылки почтовых сообщений пользователям
-        """
-
-        if summ_new_animals != '':
-            send_mail('новое объявление епта', summ_new_animals,
-                      settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
-                      fail_silently=False)
-        elif summ_new_animals == '':
-            send_mail('нет объявленией', 'объявлений нет',
-                      'dkdjjdkd@gmail.com', ['paveligin1861@gmail.com'],
-                      fail_silently=False)
-        return one_animal
+                VkWallPostAnimal.vk_wall_post(one_animal, animal_type)
+        SendMail.send_animal(summ_new_animals, one_animal)

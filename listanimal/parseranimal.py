@@ -28,6 +28,7 @@ class RtNewsAnimalParser:
             url_news = list_news('a', 'link_color')
             for url_new in url_news:
                 url_new = base_url + url_new['href']
+                print(url_new)
                 request_url_new = session.get(url_new, headers=headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
                 heading = soup_url_new.find('div', 'article__summary').text
