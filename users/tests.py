@@ -1,5 +1,0 @@
-from rest_framework.test import APITestCase
-from django.shortcuts import reverse
-from django.conf import settings
-import os
-

@@ -1,6 +1,5 @@
-from listanimal.models import CustomUser
 from users.models import EmailAuthAsk
-
+from listanimal.models import CustomUser
 from rest_framework import serializers
 
 from django.core.mail import send_mail

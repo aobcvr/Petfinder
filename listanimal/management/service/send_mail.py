@@ -10,7 +10,7 @@ logger_news = logging.getLogger('commands.createnews')
 logger_animal = logging.getLogger('commands.createanimal')
 
 
-class SendMail():
+class SendMail:
 
     def send_animal(self, summ_new_animals, one_animal):
         """

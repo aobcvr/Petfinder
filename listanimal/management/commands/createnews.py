@@ -19,19 +19,12 @@ class Command(BaseCommand):
     def createnews(self):
 
         summ_new_news = ''
-        group_id = settings.GROUP_ID
-        vk_session = vk_api.VkApi(token=settings.ACESS_TOKEN_ATTACHEMENT)
-        upload_url = vk_session.method('photos.getWallUploadServer',
-                                       {'group_id': group_id,
-                                        'v': 5.95})['upload_url']
         news = RtNewsAnimalParser.rt_news_animal(self)
         for animal_news in news:
             create_object, is_created = AnimalNews.objects.get_or_create(
                 heading=animal_news['heading'], defaults=animal_news)
             if is_created:
-                    VkWallPostNews.vk_wall_news(self, animal_news,
-                                                summ_new_news, group_id,
-                                                vk_session, upload_url)
+                    VkWallPostNews.vk_wall_news(self, animal_news)
                     summ_new_news += '\n' + ' Заголовок статьи:' + \
                                      animal_news['heading']
         SendMail.send_news(self, summ_new_news, animal_news)

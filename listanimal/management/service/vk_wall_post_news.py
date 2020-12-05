@@ -10,42 +10,44 @@ from listanimal.models import NewestLogFileContent
 
 logger = logging.getLogger('commands.createnews')
 
-class VkWallPostNews():
+class VkWallPostNews:
     """
     Класс предоставляет функции для выкладывания новостей
     с разным содержанием, а также каждая функция просматривает
     наличие или отсутствие основоного текста(main_text)
     """
-    group_id = settings.GROUP_ID
-    vk_session = vk_api.VkApi(token=settings.ACESS_TOKEN_ATTACHEMENT)
-    upload_url = vk_session.method('photos.getWallUploadServer',
-                                   {'group_id': group_id,
-                                    'v': 5.95})['upload_url']
 
     """
     vk_wall_news - осуществляет определение через какую функцию
     будет обрабатываться новость
     """
-    def vk_wall_news(self, animal_news, vk_session, upload_url):
+    def vk_wall_news(self, animal_news):
+        group_id = settings.GROUP_ID
+        vk_session = vk_api.VkApi(token=settings.ACESS_TOKEN_ATTACHEMENT)
+        upload_url = vk_session.method('photos.getWallUploadServer',
+                                       {'group_id': group_id,
+                                        'v': 5.95})['upload_url']
         try:
             if animal_news.get('url_media', None) is not None:
                 if animal_news['url_media'].endswith('.mp4'):
                     VkWallPostNews.vk_wall_news_mp4(self,
                                                     animal_news,
-                                                    self.group_id,
+                                                    group_id,
                                                     vk_session, )
                 else:
                     VkWallPostNews.vk_wall_news_photo(self, animal_news,
-                                                      upload_url, vk_session,
-                                                      self.group_id)
+                                                      upload_url,
+                                                      vk_session,
+                                                      group_id)
             elif animal_news.get('gallery_img', None) is not None:
                 VkWallPostNews.vk_wall_news_gallery_img(self, animal_news,
-                                                        upload_url, vk_session,
-                                                        self.group_id)
+                                                        upload_url,
+                                                        vk_session,
+                                                        group_id)
             else:
                 VkWallPostNews.vk_wall_without_media_file(self, animal_news,
                                                           vk_session,
-                                                          self.group_id)
+                                                          group_id)
         except vk_api.VkApiError:
             logger.error(msg='Ошибка отправки новости в '
                          'вк {},{}'.format(animal_news['description_news'],

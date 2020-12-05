@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import AnimalInfo, AnimalColor, AnimalNews, AnimalType, \
-                    NewestLogFileContent, Comment, CustomUser
+                    NewestLogFileContent, Comment,CustomUser
 
 
 admin.site.register(AnimalInfo)

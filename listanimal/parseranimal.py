@@ -28,11 +28,14 @@ class RtNewsAnimalParser:
             url_news = list_news('a', 'link_color')
             for url_new in url_news:
                 url_new = base_url + url_new['href']
-                print(url_new)
                 request_url_new = session.get(url_new, headers=headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
-                heading = soup_url_new.find('div', 'article__summary').text
-                time_post = soup_url_new.find('time', 'date')['datetime']
+                if soup_url_new.find('div', 'article__summary') == None:
+                    RtNewsAnimalParser.add_news_different_format(soup_url_new,list_news,novosti,url_new)
+                    continue
+                else:
+                    heading = soup_url_new.find('div', 'article__summary').text
+                    time_post = soup_url_new.find('time', 'date')['datetime']
                 set_news = {'url_news': url_new,
                             'description_news': list_news.text.strip(),
                             'heading': heading.strip(),
@@ -57,7 +60,7 @@ class RtNewsAnimalParser:
             full_text = ''
             for main_text_p in main_text_find_all:
                 full_text += main_text_p.text
-            set_news.update({'main_text': full_text})
+            return set_news.update({'main_text': full_text})
 
     def add_url_media(set_news, soup_url_new):
         """
@@ -66,7 +69,7 @@ class RtNewsAnimalParser:
         """
         url_media = soup_url_new.find('img', 'article__cover-image')
         if url_media is not None:
-            set_news.update({'url_media': url_media['src']})
+            return set_news.update({'url_media': url_media['src']})
 
     def add_mediaplayer_mp4(set_news, time_post, soup_url_new):
         """
@@ -79,7 +82,7 @@ class RtNewsAnimalParser:
             kod_video = url_media.split('-')[-1]
             url_media_new = 'https://cdnv.rt.com/russian/video/' + \
                             optimal_date + "/" + kod_video + '.mp4'
-            set_news.update({'url_media': url_media_new})
+            return set_news.update({'url_media': url_media_new})
 
     def add_mediaplayer_you_tube(soup_url_new, set_news):
         """
@@ -90,7 +93,7 @@ class RtNewsAnimalParser:
             url_media = soup_url_new.find('iframe', 'cover__video')
             if url_media is not None:
                 you_tube_url = 'https:' + url_media['src']
-                set_news.update({'url_media': you_tube_url})
+                return set_news.update({'url_media': you_tube_url})
 
     def add_galery_media(soup_url_new, set_news):
         """
@@ -101,4 +104,26 @@ class RtNewsAnimalParser:
         summ_gallery = []
         for gallery in galery_media:
             summ_gallery += {str(gallery['data-src'] + ' ')}
-        set_news.update({'gallery_img': summ_gallery})
+        return set_news.update({'gallery_img': summ_gallery})
+
+    def add_news_different_format(soup_usr_new, list_news,novosti,url_new):
+        image = soup_usr_new.find('div', 'main-cover')['style']
+        first_char = image.find('(')+1
+        last_char = image.rfind(')')
+        url_image = image[first_char:last_char]
+        time_post = list_news.parent.find('time','date')['datetime']
+        description_news = soup_usr_new.find('h1', 'main-page-heading__title').text
+        all_text = soup_usr_new.find('div', 'page-content')
+        heading = all_text.find_all('p')[0].text
+        main_text = all_text.find_all('p')[1:]
+        full_text = ''
+        for parth_text in main_text:
+            full_text += parth_text.text
+        set_news = {'url_news': url_new,
+                    'description_news': description_news,
+                    'heading': heading,
+                    'main_text': full_text,
+                    'time_post': time_post,
+                    'url_media': url_image}
+        return novosti.append(set_news)
+
