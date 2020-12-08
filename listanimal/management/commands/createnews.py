@@ -1,9 +1,7 @@
-import vk_api
 import logging
 from listanimal.parseranimal import RtNewsAnimalParser
 from django.core.management.base import BaseCommand
 from listanimal.models import AnimalNews
-from django.conf import settings
 
 from listanimal.management.service.vk_wall_post_news import VkWallPostNews
 from listanimal.management.service.send_mail import SendMail

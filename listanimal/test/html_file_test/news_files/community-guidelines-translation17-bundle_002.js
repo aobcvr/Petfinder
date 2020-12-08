@@ -1,0 +1,2 @@
+(window.webpackJsonp_spotim_4006192861=window.webpackJsonp_spotim_4006192861||[]).push([[37],{855:function(o){o.exports={defaultTitle:[{value:"Ваш голос имеет значение. Дискуссии модерируются на предмет соблюдения вежливости."},{modalValue:"здесь",value:"Ваш голос имеет значение. Дискуссии модерируются на предмет соблюдения вежливости. Прочтите наши правила {{modalValue}}"}]}}}]);
+//# sourceMappingURL=community-guidelines-translation17-bundle.js.map

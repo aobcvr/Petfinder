@@ -1,0 +1,1 @@
+var MediaMetricsTaboo={"sites":["http:\/\/www.echo.msk.ru\/","http:\/\/tvrain.ru\/","http:\/\/slon.ru\/","http:\/\/www.snob.ru\/","http:\/\/newsru.com\/","http:\/\/www.svoboda.org\/","http:\/\/grani.ru\/","http:\/\/www.kasparov.ru\/","http:\/\/ej.ru","http:\/\/sputnikipogrom.com\/","http:\/\/kp.ru","http:\/\/www.znak.com\/","http:\/\/www.novayagazeta.ru\/"],"words":[]};

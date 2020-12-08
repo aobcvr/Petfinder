@@ -1,0 +1,1 @@
+webpackJsonp([2],{2:function(e,t){window.RT.smi2Article&&function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src="//news.smi2.ru/data/js/85427.js",e.charset="utf-8";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()}});

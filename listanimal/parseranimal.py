@@ -30,8 +30,8 @@ class RtNewsAnimalParser:
                 url_new = base_url + url_new['href']
                 request_url_new = session.get(url_new, headers=headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
-                if soup_url_new.find('div', 'article__summary') == None:
-                    RtNewsAnimalParser.add_news_different_format(soup_url_new,list_news,novosti,url_new)
+                if soup_url_new.find('div', 'article__summary') is None:
+                    RtNewsAnimalParser.add_news_different_format(self, soup_url_new, list_news, novosti, url_new)
                     continue
                 else:
                     heading = soup_url_new.find('div', 'article__summary').text
@@ -40,17 +40,17 @@ class RtNewsAnimalParser:
                             'description_news': list_news.text.strip(),
                             'heading': heading.strip(),
                             'time_post': time_post}
-                RtNewsAnimalParser.add_main_text(set_news, soup_url_new)
-                RtNewsAnimalParser.add_url_media(set_news, soup_url_new)
-                RtNewsAnimalParser.add_mediaplayer_mp4(set_news,
+                RtNewsAnimalParser.add_main_text(self, set_news, soup_url_new)
+                RtNewsAnimalParser.add_url_media(self, set_news, soup_url_new)
+                RtNewsAnimalParser.add_mediaplayer_mp4(self, set_news,
                                                        time_post, soup_url_new)
-                RtNewsAnimalParser.add_mediaplayer_you_tube(soup_url_new,
+                RtNewsAnimalParser.add_mediaplayer_you_tube(self, soup_url_new,
                                                             set_news)
-                RtNewsAnimalParser.add_galery_media(soup_url_new, set_news)
+                RtNewsAnimalParser.add_galery_media(self, soup_url_new, set_news)
                 novosti.append(set_news)
         return novosti
 
-    def add_main_text(set_news, soup_url_new):
+    def add_main_text(self, set_news, soup_url_new):
         """
         main_text= основной текст находящийся на странице статьи
         """
@@ -62,7 +62,7 @@ class RtNewsAnimalParser:
                 full_text += main_text_p.text
             return set_news.update({'main_text': full_text})
 
-    def add_url_media(set_news, soup_url_new):
+    def add_url_media(self, set_news, soup_url_new):
         """
         url_media= принимает в значение картинки, видео
         (может быть как mp4 так и с youtube)
@@ -71,7 +71,7 @@ class RtNewsAnimalParser:
         if url_media is not None:
             return set_news.update({'url_media': url_media['src']})
 
-    def add_mediaplayer_mp4(set_news, time_post, soup_url_new):
+    def add_mediaplayer_mp4(self, set_news, time_post, soup_url_new):
         """
         url_media = видео(mp4)
         """
@@ -84,7 +84,7 @@ class RtNewsAnimalParser:
                             optimal_date + "/" + kod_video + '.mp4'
             return set_news.update({'url_media': url_media_new})
 
-    def add_mediaplayer_you_tube(soup_url_new, set_news):
+    def add_mediaplayer_you_tube(self, soup_url_new, set_news):
         """
         url_media = видео(youtube)
         """
@@ -95,7 +95,7 @@ class RtNewsAnimalParser:
                 you_tube_url = 'https:' + url_media['src']
                 return set_news.update({'url_media': you_tube_url})
 
-    def add_galery_media(soup_url_new, set_news):
+    def add_galery_media(self, soup_url_new, set_news):
         """
         galery_media = при наличии в статье нескольких фотографий,
         вместо url_media принимаются все фотографии в galery_media
@@ -106,12 +106,12 @@ class RtNewsAnimalParser:
             summ_gallery += {str(gallery['data-src'] + ' ')}
         return set_news.update({'gallery_img': summ_gallery})
 
-    def add_news_different_format(soup_usr_new, list_news,novosti,url_new):
+    def add_news_different_format(self, soup_usr_new, list_news, novosti, url_new):
         image = soup_usr_new.find('div', 'main-cover')['style']
         first_char = image.find('(')+1
         last_char = image.rfind(')')
         url_image = image[first_char:last_char]
-        time_post = list_news.parent.find('time','date')['datetime']
+        time_post = list_news.parent.find('time', 'date')['datetime']
         description_news = soup_usr_new.find('h1', 'main-page-heading__title').text
         all_text = soup_usr_new.find('div', 'page-content')
         heading = all_text.find_all('p')[0].text
@@ -126,4 +126,3 @@ class RtNewsAnimalParser:
                     'time_post': time_post,
                     'url_media': url_image}
         return novosti.append(set_news)
-
