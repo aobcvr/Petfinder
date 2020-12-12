@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from users.serialzer import EmailAuthSerialazer
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from users.models.email_auth_models import EmailAuthAsk
 
 
 class EmailAuth(viewsets.ViewSet):
@@ -23,7 +24,7 @@ class EmailAuth(viewsets.ViewSet):
         """
         Принимает запрос и привязывает email при совпадении ключей
         """
-        norm_key = EmailAuth.objects.get(key=request.GET['key'])
+        norm_key = EmailAuthAsk.objects.get(key=request.GET['key'])
         norm_key.user.email = norm_key.email_e
         norm_key.user.save(update_fields=['email'])
         return Response({'status': 'email is auth'})

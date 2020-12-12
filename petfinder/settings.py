@@ -9,7 +9,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CUSTOM_APPS=['listanimal','users']
+CUSTOM_APPS=['listanimal', 'users', 'rest']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -176,7 +176,7 @@ REDOC_SETTINGS = {
    'LAZY_RENDERING': False,
 }
 FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'Petfinder/fixtures')
-FIXTURES_APPS = CUSTOM_APPS
+
 
 
 try:

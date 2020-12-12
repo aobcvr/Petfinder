@@ -36,10 +36,11 @@ class PasswordResetView(viewsets.ViewSet):
     @action(methods=['get'], detail=True, permission_classes=['AllowAny'])
     def get(self, request):
         """
-        Форма для смены пароля аккаунта
+        Форма для смены пароля аккаунта, принимает
+        ключ в ссылку и новый пароль
         """
-        password = request.GET['password']
+        new_password = request.GET['password']
         norm_key = PasswordReset.objects.get(key=request.GET['key'])
-        norm_key.user.password = password
+        norm_key.user.password = new_password
         norm_key.user.save(update_fields=['password'])
         return Response({'status': 'password is changed'})
