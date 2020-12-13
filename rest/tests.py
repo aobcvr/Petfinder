@@ -26,7 +26,7 @@ class TestApiPetfinder(APITestCase):
     Осуществляет проверку всех GET запросов приложения rest
     '''
     fixtures = get_fixtures()
-    user_data = {'username': 'gil', 'password': 'gilsander1861'}
+    user_data = {'username': 'gil', 'password': 'gil'}
 
     def authorize(self):
         token_request = self.client.post(reverse('token'), data=self.user_data)

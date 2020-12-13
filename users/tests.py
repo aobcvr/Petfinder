@@ -33,16 +33,16 @@ class TestUserApp(APITestCase):
 
     def test_registration(self):
         url = reverse('registration')
-        data = {'username':'user',
-                'password':'qazwsx1861',
-                'password2':'qazwsx1861'}
+        data = {'username': 'user',
+                'password': 'qazwsx1861',
+                'password2': 'qazwsx1861'}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
 
     def test_login(self):
         url = reverse('login')
-        data = {'username':'user',
-                'password':'qazwsx1861'}
+        data = {'username': 'user',
+                'password': 'qazwsx1861'}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
 

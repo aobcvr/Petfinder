@@ -29,5 +29,5 @@ urlpatterns = [
     path('advertisement/type/', AnimalAdvertisementTypeView.as_view(), name='advertisement_type'),
     path('advertisement/color/', AnimalAdvertisementColorView.as_view(), name='advertisement_color'),
     path('favorit/', FavoritAnimal.as_view(), name='advertisement_favorit'),
-    path('token', views.obtain_auth_token, name='token'),
+    path('token/', views.obtain_auth_token, name='token'),
     path('comment/<pk>', CommentAnimal.as_view())]+router.urls

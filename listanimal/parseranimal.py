@@ -22,15 +22,15 @@ class RtNewsAnimalParser:
         description_news= краткое описание статьи , которое находится
         как в статье ,так и в ее кратном описании на общей странице статей
         """
-        self.request_news()
         return self.novosti
 
     def request_news(self):
         request = self.session.get(self.tag_zhivotnie, headers=self.headers)
-        RtNewsAnimalParser.start_parser(self, request)
+        return request.content
 
-    def start_parser(self, request):
-        soup = bs(request.content, 'html.parser')
+    def start_parser(self):
+        request = self.request_news()
+        soup = bs(request, 'html.parser')
         all_list_news = soup.find_all('div', 'card__heading_all-new')
         for list_news in all_list_news:
             url_news = list_news('a', 'link_color')
@@ -38,10 +38,10 @@ class RtNewsAnimalParser:
                 url_new = self.base_url + url_new['href']
                 request_url_new = self.session.get(url_new, headers=self.headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
-                RtNewsAnimalParser.gathering_news(self,soup_url_new, list_news, url_new)
-        return soup_url_new
+                RtNewsAnimalParser.gathering_news(self, soup_url_new, list_news, url_new)
+            return soup_url_new
 
-    def gathering_news(self,soup_url_new, list_news, url_new):
+    def gathering_news(self, soup_url_new, list_news, url_new):
 
         if soup_url_new.find('div', 'article__summary') is None:
             RtNewsAnimalParser.add_news_different_format(self, soup_url_new, list_news, url_new)
