@@ -4,6 +4,8 @@ import requests
 
 class RtNewsAnimalParser:
 
+    novosti = []
+
     def rt_news_animal(self):
         """
         Эта функция парсит https://russian.rt.com/tag/zhivotnye
@@ -16,39 +18,45 @@ class RtNewsAnimalParser:
         """
         headers = {'Accept': '*/*',
                    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; '
-                   'Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
+                                 'Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
         base_url = 'https://russian.rt.com'
         tag_zhivotnie = base_url + '/tag/zhivotnye'
         session = requests.Session()
+        RtNewsAnimalParser.start_parser(self, session, tag_zhivotnie, headers, base_url)
+        return RtNewsAnimalParser.novosti
+
+    def start_parser_all_news(self, session, tag_zhivotnie, headers, base_url):
         request = session.get(tag_zhivotnie, headers=headers)
         soup = bs(request.content, 'html.parser')
         all_list_news = soup.find_all('div', 'card__heading_all-new')
-        novosti = []
         for list_news in all_list_news:
             url_news = list_news('a', 'link_color')
             for url_new in url_news:
                 url_new = base_url + url_new['href']
                 request_url_new = session.get(url_new, headers=headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
-                if soup_url_new.find('div', 'article__summary') is None:
-                    RtNewsAnimalParser.add_news_different_format(self, soup_url_new, list_news, novosti, url_new)
-                    continue
-                else:
-                    heading = soup_url_new.find('div', 'article__summary').text
-                    time_post = soup_url_new.find('time', 'date')['datetime']
-                set_news = {'url_news': url_new,
-                            'description_news': list_news.text.strip(),
-                            'heading': heading.strip(),
-                            'time_post': time_post}
-                RtNewsAnimalParser.add_main_text(self, set_news, soup_url_new)
-                RtNewsAnimalParser.add_url_media(self, set_news, soup_url_new)
-                RtNewsAnimalParser.add_mediaplayer_mp4(self, set_news,
-                                                       time_post, soup_url_new)
-                RtNewsAnimalParser.add_mediaplayer_you_tube(self, soup_url_new,
-                                                            set_news)
-                RtNewsAnimalParser.add_galery_media(self, soup_url_new, set_news)
-                novosti.append(set_news)
-        return novosti
+                RtNewsAnimalParser.gathering_news(self,soup_url_new, list_news, url_new)
+        return soup_url_new
+
+    def gathering_news(self,soup_url_new, list_news, url_new):
+
+        if soup_url_new.find('div', 'article__summary') is None:
+            RtNewsAnimalParser.add_news_different_format(self, soup_url_new, list_news, url_new)
+        else:
+            heading = soup_url_new.find('div', 'article__summary').text
+            time_post = soup_url_new.find('time', 'date')['datetime']
+            set_news = {'url_news': url_new,
+                        'description_news': list_news.text.strip(),
+                        'heading': heading.strip(),
+                        'time_post': time_post}
+            RtNewsAnimalParser.add_main_text(self, set_news, soup_url_new)
+            RtNewsAnimalParser.add_url_media(self, set_news, soup_url_new)
+            RtNewsAnimalParser.add_mediaplayer_mp4(self, set_news,
+                                                   time_post, soup_url_new)
+            RtNewsAnimalParser.add_mediaplayer_you_tube(self, soup_url_new,
+                                                        set_news)
+            RtNewsAnimalParser.add_galery_media(self, soup_url_new, set_news)
+            RtNewsAnimalParser.novosti.append(set_news)
 
     def add_main_text(self, set_news, soup_url_new):
         """
@@ -106,7 +114,7 @@ class RtNewsAnimalParser:
             summ_gallery += {str(gallery['data-src'] + ' ')}
         return set_news.update({'gallery_img': summ_gallery})
 
-    def add_news_different_format(self, soup_usr_new, list_news, novosti, url_new):
+    def add_news_different_format(self, soup_usr_new, list_news, url_new):
         image = soup_usr_new.find('div', 'main-cover')['style']
         first_char = image.find('(')+1
         last_char = image.rfind(')')
@@ -125,4 +133,4 @@ class RtNewsAnimalParser:
                     'main_text': full_text,
                     'time_post': time_post,
                     'url_media': url_image}
-        return novosti.append(set_news)
+        RtNewsAnimalParser.novosti.append(set_news)

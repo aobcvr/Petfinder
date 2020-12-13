@@ -1,7 +1,7 @@
 from django.shortcuts import reverse
 from django.conf import settings
 
-from listanimal.models.custom_user import CustomUser
+from users.models.custom_user import CustomUser
 from users.models.email_auth_models import EmailAuthAsk
 from users.models.password_reset import PasswordReset
 

@@ -3,7 +3,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
-AUTH_USER_MODEL = 'listanimal.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 DEBUG = True
 
