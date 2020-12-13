@@ -3,7 +3,7 @@ import requests
 
 
 class RtNewsAnimalParser:
-    
+
     headers = {'Accept': '*/*',
                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; '
                              'Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
@@ -22,11 +22,14 @@ class RtNewsAnimalParser:
         description_news= краткое описание статьи , которое находится
         как в статье ,так и в ее кратном описании на общей странице статей
         """
-        RtNewsAnimalParser.start_parser(self)
-        return RtNewsAnimalParser.novosti
+        self.request_news()
+        return self.novosti
 
-    def start_parser_all_news(self):
+    def request_news(self):
         request = self.session.get(self.tag_zhivotnie, headers=self.headers)
+        RtNewsAnimalParser.start_parser(self, request)
+
+    def start_parser(self, request):
         soup = bs(request.content, 'html.parser')
         all_list_news = soup.find_all('div', 'card__heading_all-new')
         for list_news in all_list_news:

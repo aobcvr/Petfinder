@@ -17,7 +17,8 @@ class Command(BaseCommand):
     def createnews(self):
 
         summ_new_news = ''
-        news = RtNewsAnimalParser.rt_news_animal(self)
+        news = RtNewsAnimalParser()
+        news = news.rt_news_animal()
         for animal_news in news:
             create_object, is_created = AnimalNews.objects.get_or_create(
                 heading=animal_news['heading'], defaults=animal_news)
