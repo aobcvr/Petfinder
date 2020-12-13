@@ -3,7 +3,13 @@ import requests
 
 
 class RtNewsAnimalParser:
-
+    
+    headers = {'Accept': '*/*',
+               'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; '
+                             'Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
+    base_url = 'https://russian.rt.com'
+    tag_zhivotnie = base_url + '/tag/zhivotnye'
+    session = requests.Session()
     novosti = []
 
     def rt_news_animal(self):
@@ -16,24 +22,18 @@ class RtNewsAnimalParser:
         description_news= краткое описание статьи , которое находится
         как в статье ,так и в ее кратном описании на общей странице статей
         """
-        headers = {'Accept': '*/*',
-                   'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; '
-                                 'Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
-        base_url = 'https://russian.rt.com'
-        tag_zhivotnie = base_url + '/tag/zhivotnye'
-        session = requests.Session()
-        RtNewsAnimalParser.start_parser(self, session, tag_zhivotnie, headers, base_url)
+        RtNewsAnimalParser.start_parser(self)
         return RtNewsAnimalParser.novosti
 
-    def start_parser_all_news(self, session, tag_zhivotnie, headers, base_url):
-        request = session.get(tag_zhivotnie, headers=headers)
+    def start_parser_all_news(self):
+        request = self.session.get(self.tag_zhivotnie, headers=self.headers)
         soup = bs(request.content, 'html.parser')
         all_list_news = soup.find_all('div', 'card__heading_all-new')
         for list_news in all_list_news:
             url_news = list_news('a', 'link_color')
             for url_new in url_news:
-                url_new = base_url + url_new['href']
-                request_url_new = session.get(url_new, headers=headers)
+                url_new = self.base_url + url_new['href']
+                request_url_new = self.session.get(url_new, headers=self.headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
                 RtNewsAnimalParser.gathering_news(self,soup_url_new, list_news, url_new)
         return soup_url_new

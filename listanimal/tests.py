@@ -11,7 +11,7 @@ class MockTestParserAnimal(TestCase):
     def test_parser_rt_news(self, mock_rt_news_animal):
         list_news = open('listanimal/test/html_file_test/list_news.html','r').read()
         mock_rt_news_animal.return_value = list_news
-        result = self.parser.rt_news_animal(self)
+        result = self.parser.rt_news_animal()
         self.assertEqual(result, list_news)
 
     @patch('listanimal.parseranimal.RtNewsAnimalParser.start_parser')
