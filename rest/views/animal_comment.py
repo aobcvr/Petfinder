@@ -4,14 +4,14 @@ from rest_framework.response import Response
 
 from rest.serializer import CommentSerializer
 
-from listanimal.models import Comment
+from users.models import Comment
 
 
 class CommentAnimal(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, pk):
+    def get(self, request, pk):
 
-        queryset = Comment.objects.filter(animal=pk)
+        queryset = Comment.objects.filter(object_id=pk)
         comments = CommentSerializer(queryset, many=True).data
         return Response(comments)

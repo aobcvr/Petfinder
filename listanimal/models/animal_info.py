@@ -37,19 +37,10 @@ class AnimalColor(models.Model):
 
 
 class AnimalType(models.Model):
-    '''
+    """
     во время сбора данных, в эту модель попадают цвета животных
-    '''
+    """
     animal_type = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.animal_type
-
-
-class Comment(models.Model):
-    '''
-    Комментарии к животным , создаются пользователями сервиса
-    '''
-    animal = models.ForeignKey('AnimalInfo', blank=True,
-                               null=True, on_delete=models.PROTECT)
-    comment = models.CharField(max_length=200, blank=True, null=True)

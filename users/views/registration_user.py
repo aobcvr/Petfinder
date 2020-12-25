@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
-from users.serialzer import CreateUserProfileSerializer
+from users.serializer import CreateUserProfileSerializer
 
 
 class CreateUser(viewsets.ViewSet):

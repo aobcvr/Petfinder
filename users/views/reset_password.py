@@ -26,12 +26,16 @@ class PasswordResetView(viewsets.ViewSet):
         if request.user.email is '':
             return Response({"status": "email is not auth"})
         key = uuid4()
-        PasswordReset.objects.create(user=request.user, key=key)
+        self.send_mail_reset_password(request,key)
+        return Response({'status': 'check your email'})
+
+    def send_mail_reset_password(self, request, key):
         send_mail('Заявка на смену пароля',
                   'Для смены пароля перейдите на 127.0.0.1:8000{}?key={}'
                   .format(HttpRequest.get_full_path(request), key),
                   settings.EMAIL_HOST_USER, [request.user.email])
-        return Response({'status': 'check your email'})
+        password_reset = PasswordReset.objects.create(user=request.user, key=key)
+        return password_reset
 
     @action(methods=['get'], detail=True, permission_classes=['AllowAny'])
     def get(self, request):

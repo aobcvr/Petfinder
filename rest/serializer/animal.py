@@ -1,4 +1,4 @@
-from listanimal.models import AnimalInfo, AnimalColor, AnimalType, Comment
+from listanimal.models import AnimalInfo, AnimalColor, AnimalType
 from rest_framework import serializers
 
 
@@ -32,10 +32,4 @@ class AnimalInfoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CommentSerializer (serializers.ModelSerializer):
-    """
-    Сериализует все объекты комментариев к животным
-    """
-    class Meta:
-        model = Comment
-        fields = '__all__'
+

@@ -22,6 +22,7 @@ class RtNewsAnimalParser:
         description_news= краткое описание статьи , которое находится
         как в статье ,так и в ее кратном описании на общей странице статей
         """
+        self.start_parser()
         return self.novosti
 
     def request_news(self):
@@ -39,7 +40,7 @@ class RtNewsAnimalParser:
                 request_url_new = self.session.get(url_new, headers=self.headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
                 RtNewsAnimalParser.gathering_news(self, soup_url_new, list_news, url_new)
-            return soup_url_new
+        return soup_url_new
 
     def gathering_news(self, soup_url_new, list_news, url_new):
 

@@ -19,9 +19,13 @@ class EmailAuthSerialazer(serializers.ModelSerializer):
 
     def email_auth(self, validated_data, request):
         key = uuid4()
+        EmailAuthSerialazer.send_mail_auth(request,key)
+        email_ask = EmailAuthAsk.objects.create(user=request.user, key=key, email_e=self.validated_data['email'])
+        return email_ask
+
+    def send_mail_auth(self, request, key):
         send_mail('Подтверждение email',
                   'Подтвердите email перейдя по ссылке 127.0.0.1:8000{}?key={}'
                   .format(str(HttpRequest.get_full_path(request)), key),
                   settings.EMAIL_HOST_USER, [self.validated_data['email']],
                   fail_silently=False)
-        EmailAuthAsk.objects.create(user=request.user, key=key, email_e=self.validated_data['email'])

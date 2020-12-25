@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from users.serialzer import EmailAuthSerialazer
+from users.serializer import EmailAuthSerialazer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from users.models.email_auth_models import EmailAuthAsk

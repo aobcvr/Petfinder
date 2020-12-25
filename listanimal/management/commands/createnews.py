@@ -23,7 +23,7 @@ class Command(BaseCommand):
             create_object, is_created = AnimalNews.objects.get_or_create(
                 heading=animal_news['heading'], defaults=animal_news)
             if is_created:
-                    VkWallPostNews.vk_wall_news(self, animal_news)
-                    summ_new_news += '\n' + ' Заголовок статьи:' + \
+                VkWallPostNews.vk_wall_news(self, animal_news)
+                summ_new_news += '\n' + ' Заголовок статьи:' + \
                                      animal_news['heading']
         SendMail.send_news(self, summ_new_news, animal_news)
