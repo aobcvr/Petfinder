@@ -10,8 +10,11 @@ from uuid import uuid4
 
 
 class EmailAuthSerialazer(serializers.ModelSerializer):
-    """Отправляет на почту сообщение с ссылкой на подтверждение, в сообщении готовая ссылка с ключем
-    создает модель заявки на стороне сервера"""
+    """
+    Отправляет на почту сообщение с ссылкой на подтверждение,
+    в сообщении готовая ссылка с ключем
+    создает модель заявки на стороне сервера
+    """
 
     class Meta:
         model = CustomUser
@@ -19,8 +22,9 @@ class EmailAuthSerialazer(serializers.ModelSerializer):
 
     def email_auth(self, validated_data, request):
         key = uuid4()
-        EmailAuthSerialazer.send_mail_auth(request,key)
-        email_ask = EmailAuthAsk.objects.create(user=request.user, key=key, email_e=self.validated_data['email'])
+        EmailAuthSerialazer.send_mail_auth(request, key)
+        email_ask = EmailAuthAsk.objects.create(user=request.user, key=key,
+                                                email_e=self.validated_data['email'])
         return email_ask
 
     def send_mail_auth(self, request, key):

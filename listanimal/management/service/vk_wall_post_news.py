@@ -10,7 +10,9 @@ from listanimal.models import NewestLogFileContent
 
 logger = logging.getLogger('commands.createnews')
 
+
 class VkWallPostNews:
+
     """
     Класс предоставляет функции для выкладывания новостей
     с разным содержанием, а также каждая функция просматривает

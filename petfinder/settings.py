@@ -1,4 +1,3 @@
-
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,19 +8,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CUSTOM_APPS=['listanimal', 'users', 'rest']
+CUSTOM_APPS = ['listanimal', 'users', 'rest']
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'drf_yasg',
-]+CUSTOM_APPS
+                     'django.contrib.admin',
+                     'django.contrib.auth',
+                     'django.contrib.contenttypes',
+                     'django.contrib.sessions',
+                     'django.contrib.messages',
+                     'django.contrib.staticfiles',
+                     'rest_framework',
+                     'rest_framework.authtoken',
+                     'drf_yasg',
+                 ] + CUSTOM_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +53,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'petfinder.wsgi.application'
 
-
 REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -62,7 +60,7 @@ REST_FRAMEWORK = {
     ]
 }
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
+    'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 DATABASES = {
@@ -76,10 +74,6 @@ DATABASES = {
     }
 
 }
-
-
-
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -96,8 +90,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -108,10 +100,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-CELERY_BROKER_URL='redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://localhost:6379'
 
-CELERY_ACCEPT_CONTENT=['json']
-CELERY_TASK_SERIALIZER='json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 LOGGING = {
     'version': 1,
@@ -120,17 +112,17 @@ LOGGING = {
         'log_error_request': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'logger/request_err.log'
+            'filename': 'logger/request_err.log'
         },
         'error_create_news': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'logger/news.log'
+            'filename': 'logger/news.log'
         },
         'error_create_advertisement': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename':'logger/advertisement.log'
+            'filename': 'logger/advertisement.log'
         }
     },
     'loggers': {
@@ -152,7 +144,6 @@ LOGGING = {
     },
 }
 
-
 EMAIL_USE_TLS = True
 STATIC_URL = '/static/'
 CELERY_RESULT_BACKEND = 'django-db'
@@ -173,18 +164,16 @@ SWAGGER_SETTINGS = {
 }
 
 REDOC_SETTINGS = {
-   'LAZY_RENDERING': False,
+    'LAZY_RENDERING': False,
 }
 FIXTURES_DIR = os.path.join(PROJECT_ROOT, 'Petfinder/fixtures')
 
-
-
 try:
-    from . local import *
+    from .local import *
 except ImportError:
     pass
 
-LOG_DIR = os.path.join(BASE_DIR,'logger')
+LOG_DIR = os.path.join(BASE_DIR, 'logger')
 
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)

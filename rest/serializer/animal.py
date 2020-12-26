@@ -33,3 +33,4 @@ class AnimalInfoSerializer(serializers.ModelSerializer):
 
 
 
+

@@ -20,7 +20,8 @@ class SendMail:
         try:
             if summ_new_animals != '':
                 send_mail('новое объявление', summ_new_animals,
-                          settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
+                          settings.EMAIL_HOST_USER,
+                          ['paveligin1861@gmail.com'],
                           fail_silently=False)
             else:
                 send_mail('нет объявленией', 'объявлений нет',
@@ -29,7 +30,7 @@ class SendMail:
         except Exception as error:
             logger_news.error(msg='Ошибка отправки новости на ящик:{},'
                                   '{},{}'.format(one_animal['name'],
-                                  timezone.now(), error))
+                                                 timezone.now(), error))
             log_db = open('logger/news.log', 'r')
             NewestLogFileContent.objects.get_or_create(
                 defaults={'log_filename': 'commands.createnews',
@@ -44,16 +45,19 @@ class SendMail:
         try:
             if summ_new_news != '':
                 send_mail('новая новость ', summ_new_news,
-                          settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
+                          settings.EMAIL_HOST_USER,
+                          ['paveligin1861@gmail.com'],
                           fail_silently=False)
             else:
                 send_mail('нет новостей', 'новостей нет',
-                          settings.EMAIL_HOST_USER, ['paveligin1861@gmail.com'],
+                          settings.EMAIL_HOST_USER,
+                          ['paveligin1861@gmail.com'],
                           fail_silently=False)
         except Exception as error:
-            logger_news.error(msg='Ошибка отправки новости на ящик:{},'
-                                  '{},{}'.format(animal_news['description_news'],
-                                  timezone.now(), error))
+            logger_news.error(msg='Ошибка отправки новости на ящик:{},{},'
+                                  '{}'.format(
+                                              animal_news['description_news'],
+                                              timezone.now(), error))
             log_db = open('logger/news.log', 'r')
             NewestLogFileContent.objects.get_or_create(
                 defaults={'log_filename': 'commands.createnews',

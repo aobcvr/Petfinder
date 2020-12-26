@@ -16,8 +16,8 @@ class UrlAnimalAdvertSerializer(serializers.Serializer):
                                          slug_field='primary',
                                          many=True)
     animaltype = serializers.PrimaryKeyRelatedField(default=None,
-                                                    queryset=AnimalType.objects.all(),
-                                                    many=True)
+                                        queryset=AnimalType.objects.all(),
+                                        many=True)
 
     def search_advert(self):
 

@@ -9,13 +9,13 @@ class MockTestParserAnimal(TestCase):
 
     @patch('listanimal.parseranimal.RtNewsAnimalParser.request_news')
     def test_add_main_text(self, mock_rt_news_animal):
-        soup_url_new = open('listanimal/test/html_file_test/news.html', 'r').read()
+        soup_url_new = open('listanimal/test/html_file_test/news.html').read()
         mock_rt_news_animal.return_value = soup_url_new
         result = self.parser.start_parser()
 
     @patch('listanimal.parseranimal.RtNewsAnimalParser.request_news')
     def test_add_url_media(self, mock_rt_news_animal):
-        soup_url_new = open('listanimal/test/html_file_test/url_media.html', 'r').read()
+        soup_url_new = open('listanimal/test/html_file_test/url_media.html').read()
         mock_rt_news_animal.return_value = soup_url_new
         result = self.parser.start_parser()
 
@@ -55,4 +55,4 @@ class MockTestCreateAnimal(TestCase):
                       'status': 'adoptable'}
         mock_create_animal_objects.return_value = animal_objects
         result = self.animal_create.create_animal_objects()
-        self.assertEqual(animal_objects,result)
+        self.assertEqual(animal_objects, result)

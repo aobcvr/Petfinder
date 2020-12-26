@@ -5,7 +5,7 @@ import logging
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from listanimal.models import AnimalInfo, AnimalColor,AnimalType
+from listanimal.models import AnimalInfo, AnimalColor, AnimalType
 from listanimal.management.service.vk_wall_post_animal import VkWallPostAnimal
 from listanimal.management.service.send_mail import SendMail
 logger = logging.getLogger('commands.createanimal')

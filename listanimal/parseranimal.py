@@ -6,7 +6,8 @@ class RtNewsAnimalParser:
 
     headers = {'Accept': '*/*',
                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; '
-                             'Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'}
+                             'Linux x86_64; rv:70.0) '
+                             'Gecko/20100101 Firefox/70.0'}
     base_url = 'https://russian.rt.com'
     tag_zhivotnie = base_url + '/tag/zhivotnye'
     session = requests.Session()
@@ -37,15 +38,18 @@ class RtNewsAnimalParser:
             url_news = list_news('a', 'link_color')
             for url_new in url_news:
                 url_new = self.base_url + url_new['href']
-                request_url_new = self.session.get(url_new, headers=self.headers)
+                request_url_new = self.session.get(url_new,
+                                                   headers=self.headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
-                RtNewsAnimalParser.gathering_news(self, soup_url_new, list_news, url_new)
+                RtNewsAnimalParser.gathering_news(self, soup_url_new,
+                                                  list_news, url_new)
         return soup_url_new
 
     def gathering_news(self, soup_url_new, list_news, url_new):
 
         if soup_url_new.find('div', 'article__summary') is None:
-            RtNewsAnimalParser.add_news_different_format(self, soup_url_new, list_news, url_new)
+            RtNewsAnimalParser.add_news_different_format(self, soup_url_new,
+                                                         list_news, url_new)
         else:
             heading = soup_url_new.find('div', 'article__summary').text
             time_post = soup_url_new.find('time', 'date')['datetime']
@@ -124,7 +128,8 @@ class RtNewsAnimalParser:
         last_char = image.rfind(')')
         url_image = image[first_char:last_char]
         time_post = list_news.parent.find('time', 'date')['datetime']
-        description_news = soup_usr_new.find('h1', 'main-page-heading__title').text
+        description_news = soup_usr_new.find('h1',
+                                             'main-page-heading__title').text
         all_text = soup_usr_new.find('div', 'page-content')
         heading = all_text.find_all('p')[0].text
         main_text = all_text.find_all('p')[1:]
