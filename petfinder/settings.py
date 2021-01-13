@@ -131,12 +131,12 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'commands.createnews': {
+        'commands.create_news': {
             'handlers': ['error_create_news'],
             'level': 'ERROR',
             'propagate': True,
         },
-        'commands.createanimal': {
+        'commands.create_animal': {
             'handlers': ['error_create_advertisement'],
             'level': 'ERROR',
             'propagate': True,

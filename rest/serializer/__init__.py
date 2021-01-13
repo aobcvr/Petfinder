@@ -4,3 +4,5 @@ from .search_news import UrlAnimalNewsSerializer
 from .animal import AnimalColorSerializer, AnimalTypeSerializer\
                                 , AnimalInfoSerializer
 from .comment import CommentSerializer
+from .comment_object import CommentObject
+from .comment_edit import CommentEdit

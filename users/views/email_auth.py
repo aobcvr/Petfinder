@@ -15,7 +15,7 @@ class EmailAuth(viewsets.ViewSet):
         serialazer = EmailAuthSerialazer(data=request.data)
         serialazer.is_valid(raise_exception=True)
         if serialazer.validated_data['password'] != request.user.password:
-            return Response({'status': 'неправильынй пароль'})
+            return Response({'status': 'неправильный пароль'})
         serialazer.email_auth(validated_data=serialazer.validated_data, request=request)
         return Response({'status': 'check your email'})
 

@@ -37,22 +37,3 @@ class MockTestParserAnimal(TestCase):
         mock_rt_news_animal.return_value = soup_usr_new
         result = self.parser.start_parser()
 
-class MockTestCreateAnimal(TestCase):
-    animal_create = Command()
-
-    @patch('listanimal.management.commands.createanimal.Command.create_animal_objects')
-    def test_create_animal_objects(self, mock_create_animal_objects):
-        animal_objects = {'animal_type': 'Cat',
-            'color': 'Black',
-            'age': 'Yong',
-            'gender': 'Boy',
-            'size': 'Small',
-            'photos': 'https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/49957016/2/?bust=1607082504,'
-                      'https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/49957016/1/?bust=1607082496,'
-                      'https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/49957016/3/?bust=1607082505,'
-                      'https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/49957016/4/?bust=1607082514',
-                      'name': 'Piti',
-                      'status': 'adoptable'}
-        mock_create_animal_objects.return_value = animal_objects
-        result = self.animal_create.create_animal_objects()
-        self.assertEqual(animal_objects, result)

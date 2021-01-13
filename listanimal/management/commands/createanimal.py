@@ -8,14 +8,18 @@ from django.conf import settings
 from listanimal.models import AnimalInfo, AnimalColor, AnimalType
 from listanimal.management.service.vk_wall_post_animal import VkWallPostAnimal
 from listanimal.management.service.send_mail import SendMail
-logger = logging.getLogger('commands.createanimal')
+logger = logging.getLogger('commands.create_animal')
 
 
 class Command(BaseCommand):
-    def handle(self, *args, **options):
-        self.createanimal()
 
-    def createanimal(self):
+    def handle(self, *args, **options):
+        self.create_animal()
+
+    def create_animal(self):
+        """
+
+        """
         data = {'grant_type': 'client_credentials',
                 'client_id': settings.CLIENT_ID,
                 'client_secret': settings.CLIENT_SECRET}
@@ -25,13 +29,13 @@ class Command(BaseCommand):
         headers = {'Authorization': 'Bearer ' + token_petfinder}
         r = requests.get('https://api.petfinder.com/v2/animals?page=1',
                          headers=headers, verify=False)
-        j = json.loads(r.text)
-        dict_animal = j.get('animals')
-        Command.create_animal_objects(self, dict_animal)
+        json_file = json.loads(r.text)
+        dict_animal = json_file.get('animals')
+        self.create_animal_objects(self, dict_animal)
 
     def create_animal_objects(self, dict_animal):
+        sum_new_animals = ''
         for one_animal in dict_animal:
-            summ_new_animals = ''
             animal_type = AnimalType.objects.get_or_create(
                                 animal_type=one_animal['type'])[0]
             if one_animal['colors']['primary'] is not None:
@@ -52,7 +56,7 @@ class Command(BaseCommand):
                                                     number=one_animal['id'],
                                                     defaults=defaults)
             if is_created:
-                summ_new_animals += '\n' + 'Новое объявление:' \
+                sum_new_animals += '\n' + 'Новое объявление:' \
                                     + str(animal_type) + '' + defaults['name']
                 VkWallPostAnimal.vk_wall_post(self, one_animal, animal_type)
-        SendMail.send_animal(self, summ_new_animals, one_animal)
+        SendMail.send_animal(self, sum_new_animals, one_animal)

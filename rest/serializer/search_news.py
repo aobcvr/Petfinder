@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from django.db.models import Q
+
 from listanimal.models import AnimalNews
 
 

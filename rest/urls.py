@@ -16,13 +16,15 @@ Including another URLconf
 from django.urls import path
 
 from rest.views import AnimalAdvertisementView, AnimalNewsView, \
-    AnimalAdvertisementTypeView, AnimalAdvertisementColorView, FavoritAnimal, CommentAnimal
+    AnimalAdvertisementTypeView, AnimalAdvertisementColorView, \
+    FavoritAnimal, CommentAnimal, CommentObjectView, CommentEditView
 
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
 
 router = DefaultRouter()
 router.register('advertisement', AnimalAdvertisementView, basename='advertisement')
+router.register('comment_object',CommentObjectView, basename='comment_object')
 
 urlpatterns = [
     path('news/', AnimalNewsView.as_view(), name='news'),
@@ -30,4 +32,5 @@ urlpatterns = [
     path('advertisement/color/', AnimalAdvertisementColorView.as_view(), name='advertisement_color'),
     path('favorit/', FavoritAnimal.as_view(), name='advertisement_favorit'),
     path('token/', views.obtain_auth_token, name='token'),
-    path('comment/<pk>', CommentAnimal.as_view())]+router.urls
+    path('comment/<pk>', CommentAnimal.as_view(), name='comment'),
+    path('comment_edit/', CommentEditView.as_view({'post': 'create'}), name='comment_edit')]+router.urls

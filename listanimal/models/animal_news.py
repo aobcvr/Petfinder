@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.contenttypes.fields import GenericRelation
 
+from users.models.comment import Comment
 
 class AnimalNews(models.Model,):
     """
@@ -13,6 +15,7 @@ class AnimalNews(models.Model,):
     url_media = models.URLField(null=True, blank=True)
     time_post = models.CharField(max_length=100)
     gallery_img = ArrayField(models.URLField(), blank=True, null=True)
+    comment = GenericRelation(Comment)
 
     def __str__(self):
         return self.description_news

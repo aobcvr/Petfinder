@@ -1,3 +1,4 @@
 from .create_user import CreateUserProfileSerializer
 from .email_auth import EmailAuthSerialazer
 from .password_reset import PasswordResetSerialazer
+from .comment_create import CreateCommentSerializer

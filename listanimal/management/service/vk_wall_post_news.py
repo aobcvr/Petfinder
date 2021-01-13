@@ -12,18 +12,16 @@ logger = logging.getLogger('commands.createnews')
 
 
 class VkWallPostNews:
-
     """
     Класс предоставляет функции для выкладывания новостей
     с разным содержанием, а также каждая функция просматривает
     наличие или отсутствие основоного текста(main_text)
     """
-
-    """
-    vk_wall_news - осуществляет определение через какую функцию
-    будет обрабатываться новость
-    """
     def vk_wall_news(self, animal_news):
+        """
+        vk_wall_news - осуществляет определение через какую функцию
+        будет обрабатываться новость
+        """
         group_id = settings.GROUP_ID
         vk_session = vk_api.VkApi(token=settings.ACESS_TOKEN_ATTACHEMENT)
         upload_url = vk_session.method('photos.getWallUploadServer',
@@ -59,12 +57,12 @@ class VkWallPostNews:
                         log_filename='commands.createnews',
                         defaults={'content': log_db.read()[-100:-1]})
             log_db.close()
-    """
-    vk_wall_news_mp4 - выкладывает новость, если в ней есть
-    mp4 файл в новости
-    """
-    def vk_wall_news_mp4(self, animal_news, group_id, vk_session):
 
+    def vk_wall_news_mp4(self, animal_news, group_id, vk_session):
+        """
+        vk_wall_news_mp4 - выкладывает новость, если в ней есть
+        mp4 файл в новости
+        """
         news = {'owner_id': -group_id, 'from_group': 1, 'message': '{}\n'
                 'Ссылка на оригинал:{}\n Вложение:{}\n{}\n{}\n '
                 'Ссылка на видео:{}'.format(
@@ -76,11 +74,12 @@ class VkWallPostNews:
                                             animal_news['url_media'])}
         if animal_news.get('url_media', None) is not None:
             vk_session.method('wall.post', news)
-    '''
-    vk_wall_news_photo - выкладывает новость, при наличии в ней
-    1-й фотографии в новости
-    '''
+
     def vk_wall_news_photo(self, animal_news, upload_url, vk_session, group_id):
+        """
+        vk_wall_news_photo - выкладывает новость, при наличии в ней
+        1-й фотографии в новости
+        """
         photo = requests.get(animal_news['url_media'])
         images = open('images.jpg', 'wb')
         images.write(photo.content)
@@ -105,11 +104,12 @@ class VkWallPostNews:
                            'attachments': saved_photo}
         vk_session.method('wall.post', news)
         os.remove('images.jpg')
-    """
-    vk_wall_news_gallery_img - выкладывает новость при наличии
-    галлереи фотографий в новости
-        """
+
     def vk_wall_news_gallery_img(self, animal_news, upload_url, vk_session, group_id):
+        """
+        vk_wall_news_gallery_img - выкладывает новость при наличии
+        галлереи фотографий в новости
+        """
         saved_gallery = ''
         for one_img in animal_news['gallery_img']:
             photo = requests.get(one_img.replace(' ', ''))
@@ -118,11 +118,11 @@ class VkWallPostNews:
             time.sleep(5)
             request = requests.post(upload_url,
                                     files={'file': open('images.jpg', 'rb')})
-            save_wall_photo = vk_session.method('photos.saveWallPhoto',
-                                                {'group_id': group_id, 'v': 5.95,
-                                                 'photo': request.json()['photo'],
-                                                 'server': request.json()['server'],
-                                                 'hash': request.json()['hash']})
+            data = {'group_id': group_id, 'v': 5.95,
+                    'photo': request.json()['photo'],
+                    'server': request.json()['server'],
+                    'hash': request.json()['hash']}
+            save_wall_photo = vk_session.method('photos.saveWallPhoto', data)
             saved_photo = 'photo' + str(save_wall_photo[0]['owner_id']) \
                           + '_' + str(save_wall_photo[0]['id'])
             saved_gallery += saved_photo + ','
@@ -138,11 +138,11 @@ class VkWallPostNews:
                                             animal_news['heading'])}
         vk_session.method('wall.post', news)
 
-    """
-    vk_wall_without_media_file - выкладывает новость при
-    отсутствии медиафайлов
-    """
     def vk_wall_without_media_file(self, animal_news, vk_session, group_id):
+        """
+        vk_wall_without_media_file - выкладывает новость при
+        отсутствии медиафайлов
+        """
         news = {'owner_id': -group_id,
                 'from_group': 1, 'message': '{}\nСсылка на оригинал:{}\n'
                 'Вложение:{}\n{}\n{}'.format(

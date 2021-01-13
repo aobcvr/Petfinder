@@ -11,7 +11,7 @@ class RtNewsAnimalParser:
     base_url = 'https://russian.rt.com'
     tag_zhivotnie = base_url + '/tag/zhivotnye'
     session = requests.Session()
-    novosti = []
+    articles = []
 
     def rt_news_animal(self):
         """
@@ -24,7 +24,7 @@ class RtNewsAnimalParser:
         как в статье ,так и в ее кратном описании на общей странице статей
         """
         self.start_parser()
-        return self.novosti
+        return self.articles
 
     def request_news(self):
         request = self.session.get(self.tag_zhivotnie, headers=self.headers)
@@ -41,14 +41,14 @@ class RtNewsAnimalParser:
                 request_url_new = self.session.get(url_new,
                                                    headers=self.headers)
                 soup_url_new = bs(request_url_new.content, 'html.parser')
-                RtNewsAnimalParser.gathering_news(self, soup_url_new,
+                self.gathering_news(self, soup_url_new,
                                                   list_news, url_new)
         return soup_url_new
 
     def gathering_news(self, soup_url_new, list_news, url_new):
 
         if soup_url_new.find('div', 'article__summary') is None:
-            RtNewsAnimalParser.add_news_different_format(self, soup_url_new,
+            self.add_news_different_format(self, soup_url_new,
                                                          list_news, url_new)
         else:
             heading = soup_url_new.find('div', 'article__summary').text
@@ -57,14 +57,14 @@ class RtNewsAnimalParser:
                         'description_news': list_news.text.strip(),
                         'heading': heading.strip(),
                         'time_post': time_post}
-            RtNewsAnimalParser.add_main_text(self, set_news, soup_url_new)
-            RtNewsAnimalParser.add_url_media(self, set_news, soup_url_new)
-            RtNewsAnimalParser.add_mediaplayer_mp4(self, set_news,
-                                                   time_post, soup_url_new)
-            RtNewsAnimalParser.add_mediaplayer_you_tube(self, soup_url_new,
+            self.add_main_text(self, set_news, soup_url_new)
+            self.add_url_media(self, set_news, soup_url_new)
+            self.add_mediaplayer_mp4(self, set_news,
+                                     time_post, soup_url_new)
+            self.add_mediaplayer_you_tube(self, soup_url_new,
                                                         set_news)
-            RtNewsAnimalParser.add_galery_media(self, soup_url_new, set_news)
-            RtNewsAnimalParser.novosti.append(set_news)
+            self.add_galery_media(self, soup_url_new, set_news)
+            self.articles.append(set_news)
 
     def add_main_text(self, set_news, soup_url_new):
         """
@@ -142,4 +142,4 @@ class RtNewsAnimalParser:
                     'main_text': full_text,
                     'time_post': time_post,
                     'url_media': url_image}
-        RtNewsAnimalParser.novosti.append(set_news)
+        self.articles.append(set_news)

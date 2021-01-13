@@ -3,4 +3,6 @@ from .animal_news import AnimalNewsView
 from .animal_advertisement_color import AnimalAdvertisementColorView
 from .animal_advertisement_type import AnimalAdvertisementTypeView
 from .favorit_animal import FavoritAnimal
-from .animal_comment import CommentAnimal
+from .comment import CommentAnimal
+from .comment_object import CommentObjectView
+from .comment_edit import CommentEditView
