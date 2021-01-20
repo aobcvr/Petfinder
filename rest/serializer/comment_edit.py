@@ -18,5 +18,3 @@ class CommentEdit(serializers.Serializer):
             return {'status': 'comment was edited'}
         else:
             return {'status': 'it is not your comment'}
-
-    def del
