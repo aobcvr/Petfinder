@@ -33,4 +33,4 @@ urlpatterns = [
     path('favorit/', FavoritAnimal.as_view(), name='advertisement_favorit'),
     path('token/', views.obtain_auth_token, name='token'),
     path('comment/<pk>', CommentAnimal.as_view(), name='comment'),
-    path('comment_edit/', CommentEditView.as_view({'post': 'create'}), name='comment_edit')]+router.urls
+    path('comment_edit/', CommentEditView.as_view({'post': 'create', 'delete': 'destroy'}), name='comment_edit')]+router.urls
